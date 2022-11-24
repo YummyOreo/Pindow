@@ -1,0 +1,13 @@
+{
+        "app_commands": [
+                {"app": "alacritty", "args": [
+                        "--working-directory", "D:/Desktop 2"
+                ]},
+                {"app": "chrome"},
+                {"app": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"}
+        ],
+        "timeout": 5,
+        "keybindings": {
+                "debug_close": ["Key1", "RControl"]
+        }
+}
