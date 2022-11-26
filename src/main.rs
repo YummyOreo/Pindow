@@ -18,7 +18,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // not move)
     // windows::test();
     let user_config = config::load()?;
-    let apps_windows = vec![window::handler::ApplicationWindows::new(); user_config.app_commands.len()];
+    let apps_windows =
+        vec![window::handler::ApplicationWindows::new(); user_config.app_commands.len()];
+    let current_windows: Vec<isize> = window::utils::win::get_windows();
+    // println!("{:?}", current_windows);
+    for mut i in apps_windows {
+        i.update(&current_windows);
+    }
     let device_state = DeviceState::new();
 
     let mut key_handler = keybindings::handler::Handler {
@@ -37,8 +43,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             key_handler.check_num_time();
 
             if let Some(keybind_run) = key_handler.check_keybinds(&user_config) {
-                    run::run_keybind(keybind_run, &user_config, &key_handler);
-                    key_handler.reset_num();
+                run::run_keybind(keybind_run, &user_config, &key_handler);
+                key_handler.reset_num();
             }
         }
     }

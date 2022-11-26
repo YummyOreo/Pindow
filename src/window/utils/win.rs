@@ -6,6 +6,8 @@ use windows::{
     Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
     Win32::UI::WindowsAndMessaging,
 };
+use winapi::{shared::minwindef::LPARAM, shared::windef, um::winuser::EnumWindows};
+
 // Impl async for these
 pub fn get_process_file(handle: HANDLE) -> Option<String> {
     let mut wierd_path: [u8; 512] = [0; 512];
@@ -36,7 +38,7 @@ pub fn get_id(window: isize) -> u32 {
     id
 }
 pub fn get_handle(id: u32) -> Option<HANDLE> {
-    // REMEMBER TO CLOSE THE HANDLE WITH `close_handle(Handle);`
+    //! REMEMBER TO CLOSE THE HANDLE WITH `close_handle(Handle);`
     unsafe {
         let handler_wraped = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, id);
         match handler_wraped {
@@ -67,4 +69,34 @@ pub fn activate_window(window: isize) -> Result<(), ActivateWindowError> {
         BOOL(0) => Err(ActivateWindowError {}),
         _ => Ok(()),
     }
+}
+
+pub fn get_windows() -> Vec<isize> {
+
+    extern "system" fn enum_windows_proc(hwnd: windef::HWND, l_param: LPARAM) -> i32 {
+        /* unsafe { */
+        unsafe {
+            let windows: &mut Vec<isize> = &mut *(l_param as *mut Vec<isize>);
+            /* windows.as_ref().unwrap().clone().insert(0, *hwnd.cast()); */
+            windows.insert(0, hwnd as isize);
+            /* windows.to_vec() */
+            /* println!("{:?}", hwnd as isize); */
+
+            *(l_param as *mut Vec<isize>) = windows.to_vec().clone();
+        };
+
+            /* windows.insert(0, *(hwnd).cast()); */
+            /* *(l_param as *mut Vec<isize>) = windows.to_vec(); */
+        /* }; */
+        true.into()
+    }
+
+    let mut windows: Vec<isize> = vec![];
+    unsafe {
+        EnumWindows(
+            Some(enum_windows_proc),
+            &mut windows as *mut Vec<isize> as LPARAM,
+        );
+    };
+    return windows;
 }
