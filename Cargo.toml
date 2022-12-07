@@ -10,6 +10,8 @@ device_query = "1.1.1"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 regex = "1"
+which = "4.3.0"
+notify-rust = "4.5.10"
 
 [dependencies.windows]
 version = "0.42.0"
@@ -18,7 +20,8 @@ features = [
     "Win32_UI_WindowsAndMessaging",
     "Win32_System_ProcessStatus",
     "Win32_System_Threading",
+    "Win32_UI_Input_KeyboardAndMouse"
 ]
 
-[target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["winuser"] }
+# [target.'cfg(windows)'.dependencies]
+# winapi = { version = "0.3", features = ["winuser"] }

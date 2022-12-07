@@ -26,7 +26,7 @@ impl Handler {
 
     pub fn check_num(&mut self) {
         let last_num = self.num;
-        for key in &self.current_keys {
+        for key in self.current_keys.clone() {
             match key {
                 Keycode::Key1 => {
                     self.num = 1;
@@ -54,6 +54,9 @@ impl Handler {
                 }
                 Keycode::Key9 => {
                     self.num = 9;
+                }
+                Keycode::Escape | Keycode::Key0 => {
+                    self.reset_num();
                 }
                 _ => {}
             }
@@ -86,8 +89,8 @@ impl Handler {
             return false;
         }
 
-        for index in 0..self.current_keys.len() {
-            if !expected.contains(&self.current_keys[index]) {
+        for key in self.current_keys.clone().into_iter() {
+            if !expected.contains(&key) {
                 return false;
             }
         }
@@ -99,13 +102,15 @@ impl Handler {
         self.current_keys = keys;
     }
 
-    pub fn check_keybinds(&self, user_config: &options::Config) -> Option<KeybindRun> {
-        let keybindings = &user_config.key_bindings;
+    pub fn check_keybinds(&self, user_config: &options::Configurations) -> Option<KeybindRun> {
+        let keybindings = &user_config.get_current().key_bindings;
 
-        if self.check_keybind(&keybindings.debug_close) {
+        if self.check_keybind(&keybindings.debug_close) && user_config.debug == Some(true) {
             Some(KeybindRun::DebugQuit)
         } else if self.check_keybind(&keybindings.app_num) {
             Some(KeybindRun::RunAppNum)
+        } else if self.check_keybind(&keybindings.change_config) {
+            Some(KeybindRun::ChangeConfig)
         } else {
             None
         }

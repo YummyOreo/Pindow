@@ -1,5 +1,5 @@
 {
-    "configs": [
+    "config": [
         {
             "name": "Work",
             "app_commands": [
@@ -19,16 +19,10 @@
             "name": "Chill",
             "app_commands": [
                 {"app": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"},
-                {"app": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"},
-                {"app": "alacritty", "args": [
-                    "--working-directory", "D:/Desktop 2", "--hold"
-                ]
-                }
+                {"app": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"}
             ],
-            "timeout": 10
-        },
-        {
-            "name": "Nothing"
+            "timeout": 10,
+            "keybindings": {}
         }
     ]
 }

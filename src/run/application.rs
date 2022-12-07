@@ -3,12 +3,24 @@ use std::thread;
 
 use crate::config::options::Config;
 use crate::keybindings::handler::Handler;
+use crate::run::utils;
+use crate::window::utils::win;
 
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
-    let num = TryInto::<usize>::try_into(key_handler.num).unwrap();
+    let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
 
-    if num == 0 || num > 9 {
+    if num > 9 {
         return;
+    }
+
+    if num == 0 {
+        if let Some(res) =
+            utils::get_app_by_id(user_config, win::get_id(win::current_window()) as isize)
+        {
+            num = res + 1;
+        } else {
+            return;
+        }
     }
 
     if user_config.app_commands.len() >= num {

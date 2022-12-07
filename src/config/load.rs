@@ -34,19 +34,49 @@ fn map_keybindings(keybindings_str: options::KeybindingsStr) -> options::Keybind
         }
     }
 
+    let mut change_config: Vec<Keycode>;
+    match keybindings_str.change_config {
+        None => {
+            change_config = vec![Keycode::LControl, Keycode::Grave];
+        }
+        Some(s) => {
+            change_config = Vec::new();
+            for key in s {
+                change_config.insert(0, keycode_from_string(&key).unwrap());
+            }
+        }
+    };
+
+    let mut tab_app: Vec<Keycode>;
+    match keybindings_str.tab_app {
+        None => {
+            tab_app = vec![Keycode::LControl, Keycode::Apostrophe];
+        }
+        Some(s) => {
+            tab_app = Vec::new();
+            for key in s {
+                tab_app.insert(0, keycode_from_string(&key).unwrap());
+            }
+        }
+    };
+
     options::Keybindings {
         app_num,
+        tab_app,
+        change_config,
         debug_close,
     }
 }
 
-pub fn map_config(options: options::ConfigStr) -> options::Config {
+pub fn map_config(options: options::ConfigStr, index: usize) -> options::Config {
     let keybindings: options::KeybindingsStr;
     match options.keybindings {
         None => {
             keybindings = options::KeybindingsStr {
-                app_num: Some(Vec::new()),
-                debug_close: Some(Vec::new()),
+                app_num: None,
+                tab_app: None,
+                change_config: None,
+                debug_close: None,
             };
         }
         Some(s) => {
@@ -83,10 +113,33 @@ pub fn map_config(options: options::ConfigStr) -> options::Config {
         }
     }
 
+    let name: String;
+    match options.name {
+        None => {
+            name = index.to_string();
+        }
+        Some(s) => {
+            name = s;
+        }
+    }
+
     options::Config {
+        name,
         app_commands,
         timeout,
         key_bindings: map_keybindings(keybindings),
+    }
+}
+
+pub fn map_configurations(config: options::ConfigurationsStr) -> options::Configurations {
+    let mut configs: Vec<options::Config> = vec![];
+    for i in config.configs {
+        configs.insert(configs.len(), map_config(i, configs.len()));
+    }
+    options::Configurations {
+        configs,
+        current_config: 0,
+        debug: None,
     }
 }
 

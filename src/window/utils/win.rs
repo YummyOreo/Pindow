@@ -1,12 +1,12 @@
+use notify_rust;
 use regex::Regex;
 use windows::{
     Win32::Foundation::HANDLE,
-    Win32::Foundation::{CloseHandle, BOOL, HWND},
+    Win32::Foundation::{CloseHandle, HWND},
     Win32::System::ProcessStatus::K32GetProcessImageFileNameA,
     Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
     Win32::UI::WindowsAndMessaging,
 };
-use winapi::{shared::minwindef::LPARAM, shared::windef, um::winuser::EnumWindows};
 
 // Impl async for these
 pub fn get_process_file(handle: HANDLE) -> Option<String> {
@@ -53,50 +53,36 @@ pub fn close_handle(handle: HANDLE) {
     };
 }
 
-pub struct ActivateWindowError {}
-impl std::fmt::Display for ActivateWindowError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Could not activate window!")
-    }
-}
-
-pub fn activate_window(window: isize) -> Result<(), ActivateWindowError> {
-    let success: BOOL;
-    unsafe {
-        success = WindowsAndMessaging::SetForegroundWindow(HWND { 0: window });
-    };
-    match success {
-        BOOL(0) => Err(ActivateWindowError {}),
-        _ => Ok(()),
-    }
+pub fn current_window() -> isize {
+    unsafe { WindowsAndMessaging::GetForegroundWindow().0 }
 }
 
 pub fn get_windows() -> Vec<isize> {
-
-    extern "system" fn enum_windows_proc(hwnd: windef::HWND, l_param: LPARAM) -> i32 {
-        /* unsafe { */
-        unsafe {
-            let windows: &mut Vec<isize> = &mut *(l_param as *mut Vec<isize>);
-            /* windows.as_ref().unwrap().clone().insert(0, *hwnd.cast()); */
-            windows.insert(0, hwnd as isize);
-            /* windows.to_vec() */
-            /* println!("{:?}", hwnd as isize); */
-
-            *(l_param as *mut Vec<isize>) = windows.to_vec().clone();
-        };
-
-            /* windows.insert(0, *(hwnd).cast()); */
-            /* *(l_param as *mut Vec<isize>) = windows.to_vec(); */
-        /* }; */
-        true.into()
-    }
-
+    // re do this to be better:
+    // https://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
     let mut windows: Vec<isize> = vec![];
     unsafe {
-        EnumWindows(
-            Some(enum_windows_proc),
-            &mut windows as *mut Vec<isize> as LPARAM,
-        );
-    };
+        let mut child = WindowsAndMessaging::GetTopWindow(None);
+        loop {
+            if child == HWND(0) {
+                break;
+            };
+            if WindowsAndMessaging::IsWindowVisible(child).as_bool() {
+                windows.insert(0, child.0);
+            }
+            child = WindowsAndMessaging::GetWindow(child, WindowsAndMessaging::GW_HWNDNEXT);
+        }
+    }
     return windows;
+}
+
+pub fn popup(title: String, message: String) {
+    // replace this with better solution
+    let _ = notify_rust::Notification::new()
+        .appname("Pin App")
+        .icon("file:///C:/Users/OreoD/Downloads/pin.png")
+        .summary(&title)
+        .body(&message)
+        .timeout(notify_rust::Timeout::Milliseconds(1000))
+        .show();
 }
