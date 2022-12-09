@@ -139,9 +139,9 @@ pub fn map_configurations(config: options::ConfigurationsStr) -> options::Config
     options::Configurations {
         configs,
         current_config: 0,
-        args: options::Args{
+        args: options::Args {
             ..Default::default()
-        }
+        },
     }
 }
 

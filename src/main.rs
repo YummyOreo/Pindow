@@ -1,22 +1,22 @@
 use device_query::{DeviceQuery, DeviceState, Keycode};
 
+mod arguments;
 mod config;
 mod keybindings;
 mod run;
 mod window;
-mod arguments;
+pub mod error;
 
 fn load_current_config() -> config::options::Configurations {
     let arguments = arguments::get_args();
     let mut user_config = config::load().unwrap();
 
-    user_config.args = config::options::Args{debug: Some(arguments.debug), start_config: arguments.start_config};
+    user_config.args = config::options::Args {
+        debug: Some(arguments.debug),
+        start_config: arguments.start_config,
+    };
     if let Some(current_config) = user_config.args.start_config {
-        if current_config > 8 || current_config > user_config.configs.len() {
-            println!("Could not set the config to: {:?}.", current_config+1);
-        } else {
-            user_config.set_current(current_config);
-        }
+        user_config.set_current(current_config).unwrap();
     }
 
     println!("Current Config: {}", user_config.get_current().name);
@@ -25,14 +25,16 @@ fn load_current_config() -> config::options::Configurations {
 }
 
 fn get_key_handler(timeout: u128) -> keybindings::handler::Handler {
-
     keybindings::handler::Handler {
         timeout,
         ..Default::default()
     }
 }
 
-fn main_loop(user_config: &mut config::options::Configurations, key_handler: &mut keybindings::handler::Handler) {
+fn main_loop(
+    user_config: &mut config::options::Configurations,
+    key_handler: &mut keybindings::handler::Handler,
+) {
     let device_state = DeviceState::new();
 
     loop {

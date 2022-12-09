@@ -12,7 +12,12 @@ pub fn change_config(user_configs: &mut Configurations, key_handler: &mut Handle
     if num == 0 {
         user_configs.increment();
     } else {
-        user_configs.set_current(num - 1);
+        match user_configs.set_current(num - 1) {
+            Ok(_) => {},
+            Err(e) => {
+                println!("{}", e);
+            }
+        }
     }
     key_handler.timeout = user_configs.get_current().timeout;
     println!("Current Config: {}", user_configs.get_current().name);

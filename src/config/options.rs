@@ -1,6 +1,8 @@
 use device_query::Keycode;
 use serde::Deserialize;
 
+use crate::error;
+
 #[derive(Debug, Clone, Default)]
 pub struct Keybindings {
     pub app_num: Vec<Keycode>,
@@ -26,7 +28,7 @@ pub struct Config {
 #[derive(Debug, Clone, Default)]
 pub struct Args {
     pub debug: Option<bool>,
-    pub start_config: Option<usize>
+    pub start_config: Option<usize>,
 }
 
 #[derive(Debug, Clone)]
@@ -41,12 +43,14 @@ impl Configurations {
         self.configs[self.current_config].clone()
     }
 
-    pub fn set_current(&mut self, index: usize) -> Option<Config> {
+    pub fn set_current(&mut self, index: usize) -> Result<Config, error::config::SetConfigError> {
         if index >= self.configs.len() {
-            None
+            Err(error::config::SetConfigError{
+                num: (index + 1) as i32
+            })
         } else {
             self.current_config = index;
-            Some(self.get_current())
+            Ok(self.get_current())
         }
     }
 
