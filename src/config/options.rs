@@ -23,11 +23,17 @@ pub struct Config {
     pub key_bindings: Keybindings,
 }
 
+#[derive(Debug, Clone, Default)]
+pub struct Args {
+    pub debug: Option<bool>,
+    pub start_config: Option<usize>
+}
+
 #[derive(Debug, Clone)]
 pub struct Configurations {
     pub configs: Vec<Config>,
     pub current_config: usize,
-    pub debug: Option<bool>
+    pub args: Args,
 }
 
 impl Configurations {

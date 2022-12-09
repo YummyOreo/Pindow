@@ -4,6 +4,7 @@ use std::time::SystemTime;
 use crate::config::options;
 use crate::run::KeybindRun;
 
+#[derive(Default)]
 pub struct Handler {
     pub num: i8,
     pub num_time: Option<SystemTime>,
@@ -105,7 +106,7 @@ impl Handler {
     pub fn check_keybinds(&self, user_config: &options::Configurations) -> Option<KeybindRun> {
         let keybindings = &user_config.get_current().key_bindings;
 
-        if self.check_keybind(&keybindings.debug_close) && user_config.debug == Some(true) {
+        if self.check_keybind(&keybindings.debug_close) && user_config.args.debug == Some(true) {
             Some(KeybindRun::DebugQuit)
         } else if self.check_keybind(&keybindings.app_num) {
             Some(KeybindRun::RunAppNum)
