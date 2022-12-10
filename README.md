@@ -1,7 +1,10 @@
 # Pindow
 **[About](#About)**
+
 **[Installation](#Installation)**
+
 **[Config](#Config)**
+
 **[Config](#Contributing)**
 
 ---
