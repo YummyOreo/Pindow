@@ -1,4 +1,7 @@
 # Pindow
+Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
+> Currently this is only available on windows
+---
 **[About](#About)**
 
 **[Installation](#Installation)**
@@ -6,10 +9,6 @@
 **[Config](#Config)**
 
 **[Config](#Contributing)**
-
----
-Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
-> Currently this is only available on windows
 
 # About
 ---
