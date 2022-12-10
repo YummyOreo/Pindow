@@ -1,5 +1,4 @@
 # Pindow
----
 **[About](#About)**
 
 **[Installation](#Installation)**
@@ -9,16 +8,13 @@
 **[Config](#Contributing)**
 
 # About
----
 Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
 > Currently this is only available on windows
 ## Preview
 
 # Installation
----
 
 # Config
----
 ```json
 {
     "configs": [
@@ -47,12 +43,10 @@ Pindow allows you to have a list of "pinned" apps, open each one with one keybin
 The keys are listed [here](KEYS.md).
 
 # Contributing
----
 
 ## Building
 
 # ToDo
----
 - [ ] Help menu with `--help`
 - [ ] Get path of config with arguments
 - [ ] Load different configs with arguments
