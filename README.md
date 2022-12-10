@@ -52,6 +52,7 @@ This is were you put your configs.
 The name of your configs
 
 > Default: index of the config
+
     </details>
 
     <details>
@@ -89,6 +90,7 @@ The name of your configs
     Change the default keybindings
 
     > Defaults to the default keybindings
+
         <details>
         <summary>app_num</summary>
         The keybinding that you press to open a app.
