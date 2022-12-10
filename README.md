@@ -40,89 +40,59 @@ Example:
     ]
 }
 ```
-### Entrys:
-<details>
-<summary>configs</summary>
-This is were you put your configs.
+### Fields:
+`configs`:
+    > Required
 
-> Required
+    The configs of the app.
 
-<details>
-<summary>name</summary>
-The name of your configs
+    `name`:
+        > Defaults to the index
 
-> Default: index of the config
+        The name of the config.
 
-</details>
-
-    <details>
-    <summary>apps</summary>
-    A list of all your apps
-
-    > Defaults to empty list
-
-        <details>
-        <summary>app_path</summary>
-        The path of the app (can be a command)
-
-        > Required
-        </details>
-
-        <details>
-        <summary>args</summary>
-        The arguments passed when spawing the app.
-
+    `apps`:
         > Defaults to empty list
-        </details>
 
-    </details>
+        The apps
 
-    <details>
-    <summary>timout</summary>
-    The timeout for the numbers
+        `app_path`:
+            > Required
 
-    > In seconds
-    > Default: 5 seconds
-    </details>
+            The path of the app
 
-    <details>
-    <summary>keybindings</summary>
-    Change the default keybindings
+        `args`:
+            > Defaults to empty list
 
-    > Defaults to the default keybindings
+            The Arguments/flags to start the app with
 
-        <details>
-        <summary>app_num</summary>
-        The keybinding that you press to open a app.
-        If there is no provided number (or 0), it will spawn a new app with the current focused app if it is in the list.
+    `timeout`:
+        > Defaults to 5
+        > In seconds
 
-        > Usage: `{num} + keybinding`
-        > Defaults to `LCtrl + ,`
-        > See [keys](KEYS.md)
-        </details>
+        The timeout for number presses
 
-        <details>
-        <summary>change_config</summary>
-        The keybind that you press to change your current config.
-        If there is no number provided (or 0), it will increment through the configs.
+    `keybindings`:
+        > Defaults to the default keybindings
 
-        > Usage: `{num} + keybinding`
-        > Defaults to `LCtrl + \``
-        > See [keys](KEYS.md)
-        </details>
+        `app_num`:
+            > Defaults to: `LCtrl + ,`
+            > Usage: `{num} + keybinding`
 
-        <details>
-        <summary>debug_clone</summary>
-        Closes the app if in debug mode.
+            The keybinding to spawn a new app.
+            If no number is provided (or 0), it will spawn the current focused app (if in the list).
 
-        > Usage: `keybinding`
-        > Defaults to RCtrl + RAlt`
-        > See [keys](KEYS.md)
-        </details>
+        `change_config`:
+            > Defaults to: `LCtrl + \``
+            > Usage: `{num} + keybinding`
 
-    </details>
+            Sets the current config.
+            If no number is provided (or 0), it will spawn the current focused app (if in the list).
 
-</details>
+        `debug_close`:
+            > Defaults to: `RCtrl + RAlt`
+
+            Stops the app if in debug mode.
 
 ### Arguments/Flags
     `-d` or `--debug`: Starts the app in debug mode.
