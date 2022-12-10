@@ -5,7 +5,8 @@
 **[Config](#Contributing)**
 
 ---
-Pindow as a windows app that allows you to have a list of "pinned" apps and open each one with one keybind (`{num} + keybind`).
+Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
+> Currently this is only available on windows
 
 # About
 ---
