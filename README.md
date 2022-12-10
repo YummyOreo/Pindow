@@ -53,7 +53,7 @@ The name of your configs
 
 > Default: index of the config
 
-    </details>
+</details>
 
     <details>
     <summary>apps</summary>
