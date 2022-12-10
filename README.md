@@ -42,14 +42,14 @@ Example:
 ```
 ### Entrys:
 <details>
-<summary>`"configs"`</summary>
+<summary>configs</summary>
 <br>
 This is were you put your configs.
 
 > Required
 
 <details>
-<summary>`"name"`</summary>
+<summary>name</summary>
 <br>
 The name of your configs
 
@@ -57,14 +57,14 @@ The name of your configs
 </details>
 
 <details>
-<summary>`"apps"`</summary>
+<summary>apps</summary>
 <br>
 A list of all your apps
 
 > Defaults to empty list
 
 <details>
-<summary>`"app_path"`</summary>
+<summary>app_path</summary>
 <br>
 The path of the app (can be a command)
 
@@ -72,7 +72,7 @@ The path of the app (can be a command)
 </details>
 
 <details>
-<summary>`"args"`</summary>
+<summary>args</summary>
 <br>
 The arguments passed when spawing the app.
 
@@ -82,7 +82,7 @@ The arguments passed when spawing the app.
 </details>
 
 <details>
-<summary>`"timout"`</summary>
+<summary>timout</summary>
 <br>
 The timeout for the numbers
 
@@ -91,12 +91,12 @@ The timeout for the numbers
 </details>
 
 <details>
-<summary>`"keybindings"`</summary>
+<summary>keybindings</summary>
 <br>
 This is how you dropdown.
 
 <details>
-<summary>`"app_num"`</summary>
+<summary>app_num</summary>
 <br>
 The keybinding that you press to open a app.
 If there is no provided number (or 0), it will spawn a new app with the current focused app if it is in the list.
@@ -107,7 +107,7 @@ If there is no provided number (or 0), it will spawn a new app with the current 
 </details>
 
 <details>
-<summary>`"change_config"`</summary>
+<summary>change_config</summary>
 <br>
 The keybind that you press to change your current config.
 If there is no number provided (or 0), it will increment through the configs.
@@ -118,7 +118,7 @@ If there is no number provided (or 0), it will increment through the configs.
 </details>
 
 <details>
-<summary>`"debug_clone"`</summary>
+<summary>debug_clone</summary>
 <br>
 Closes the app if in debug mode.
 
