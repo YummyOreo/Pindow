@@ -1,10 +1,7 @@
 # Pindow
 **[About](#About)**
-
 **[Installation](#Installation)**
-
 **[Config](#Config)**
-
 **[Config](#Contributing)**
 
 ---
@@ -44,7 +41,7 @@ Pindow as a windows app that allows you to have a list of "pinned" apps and open
 }
 ```
 ### Key
-The keys are listed [here](KEYS.md)
+The keys are listed [here](KEYS.md).
 
 # Contributing
 ---
