@@ -12,8 +12,6 @@ Pindow allows you to have a list of "pinned" apps, open each one with one keybin
 > Currently this is only available on windows
 ## Preview
 
-![](https://github.com/YummyOreo/Pindow/blob/main/files/prev.mp4)
-
 # Installation
 Download the binary or [build it](#Building). Then put it somewere.
 
