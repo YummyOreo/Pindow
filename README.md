@@ -45,7 +45,7 @@ Example:
     ]
 }
 ```
-Your config is located in `Documents/Pindow/config.json`.
+Your config is located in `App Data/Roaming/Pindow/config.json`.
 
 ### Fields
 The fields of the config are listed [here](FIELDS.md)

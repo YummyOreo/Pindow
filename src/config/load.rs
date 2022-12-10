@@ -3,8 +3,20 @@ use device_query::Keycode;
 use crate::config::options;
 
 pub fn load_string(file: String) -> String {
-    let data = std::fs::read_to_string(file).expect("Unable to read file");
-    data
+    match std::fs::read_to_string(&file) {
+        Ok(data) => data,
+        _ => {
+            make_file(&file);
+            load_string(file)
+        }
+    }
+}
+
+pub fn make_file(file: &String) {
+    let path = std::path::Path::new(file);
+    let prefix = path.parent().unwrap();
+    std::fs::create_dir_all(prefix).unwrap();
+    std::fs::write(file, "{\"configs\": [{}]}").expect("Unable to write file");
 }
 
 fn map_keybindings(keybindings_str: options::KeybindingsStr) -> options::Keybindings {
