@@ -11,8 +11,12 @@
 Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
 > Currently this is only available on windows
 ## Preview
+![](files/prev.mp4)
 
 # Installation
+Download the binary or [build it](#Building). Then put it somewere.
+
+> You can put it in your path or have it start on start up. Whatever suits you!
 
 # Config
 Example:
@@ -40,7 +44,10 @@ Example:
     ]
 }
 ```
-### [Fields](FIELDS.md):
+Your config is located in `Documents/Pindow/config.json`.
+
+### Fields
+The fields of the config are listed [here](FIELDS.md)
 
 ### Arguments/Flags
     `-d` or `--debug`: Starts the app in debug mode.
@@ -50,8 +57,14 @@ Example:
 The keys are listed [here](KEYS.md).
 
 # Contributing
+Just open a issue or pr to a existing issue and i'll see if I want it.
+To run you should do: `cargo run -- -d`.
+
+There are no dependencies that will not be installed by cargo!
+> Bar windows requirement as it uses the windows api
 
 ## Building
+Run `cargo build`!
 
 # ToDo
 - [ ] Help menu with `--help`
