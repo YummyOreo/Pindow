@@ -11,6 +11,8 @@
 Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
 > Currently this is only available on windows
 ## Preview
+https://user-images.githubusercontent.com/76080854/206830997-5ecc5d55-8219-4fff-8c81-84c90ac9c71b.mp4
+
 
 # Installation
 Download the binary or [build it](#Building). Then put it somewere.
