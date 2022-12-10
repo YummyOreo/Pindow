@@ -2,13 +2,13 @@
     "configs": [
         {
             "name": "Work",
-            "app_commands": [
-                {"app": "alacritty", "args": [
+            "apps": [
+                {"app_path": "alacritty", "args": [
                     "--working-directory", "D:/Desktop 2", "--hold"
                 ]},
-                {"app": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"},
-                {"app": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"},
-                {"app": "chrome"}
+                {"app_path": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"},
+                {"app_path": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"},
+                {"app_path": "chrome"}
             ],
             "timeout": 5,
             "keybindings": {
@@ -17,10 +17,10 @@
         },
         {
             "name": "Chill",
-            "app_commands": [
-                {"app": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"},
-                {"app": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"},
-                {"app": "alacritty", "args": [
+            "apps": [
+                {"app_path": "C:\\Program Files\\Mozilla Firefox\\firefox.exe"},
+                {"app_path": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe"},
+                {"app_path": "alacritty", "args": [
                     "--working-directory", "D:/Desktop 2", "--hold"
                 ]
                 }

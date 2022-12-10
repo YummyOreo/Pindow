@@ -85,7 +85,7 @@ pub fn map_config(options: options::ConfigStr, index: usize) -> options::Config 
     }
 
     let mut app_commands: Vec<options::AppCommand>;
-    match options.app_commands {
+    match options.apps {
         None => {
             app_commands = Default::default();
         }
@@ -94,7 +94,7 @@ pub fn map_config(options: options::ConfigStr, index: usize) -> options::Config 
             app_commands = Vec::new();
             for command in app_commands_str.into_iter() {
                 let mut app_command: options::AppCommand = Default::default();
-                app_command.app = command.app;
+                app_command.app = command.app_path;
                 if let Some(args) = command.args {
                     app_command.args = args;
                 }

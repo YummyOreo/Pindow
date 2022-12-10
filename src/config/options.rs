@@ -72,14 +72,14 @@ pub struct KeybindingsStr {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct AppCommandStr {
-    pub app: String,
+    pub app_path: String,
     pub args: Option<Vec<String>>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct ConfigStr {
     pub name: Option<String>,
-    pub app_commands: Option<Vec<AppCommandStr>>,
+    pub apps: Option<Vec<AppCommandStr>>,
     pub timeout: Option<u128>,
     pub keybindings: Option<KeybindingsStr>,
 }
