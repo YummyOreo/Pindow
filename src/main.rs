@@ -9,11 +9,12 @@ pub mod error;
 
 fn load_current_config() -> config::options::Configurations {
     let arguments = arguments::get_args();
-    let mut user_config = config::load().unwrap();
+    let mut user_config = config::load(arguments.path.clone());
 
     user_config.args = config::options::Args {
         debug: Some(arguments.debug),
         start_config: arguments.start_config,
+        path: arguments.path,
     };
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();

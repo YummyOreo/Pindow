@@ -29,6 +29,7 @@ pub struct Config {
 pub struct Args {
     pub debug: Option<bool>,
     pub start_config: Option<usize>,
+    pub path: Option<String>
 }
 
 #[derive(Debug, Clone)]

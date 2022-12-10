@@ -53,6 +53,7 @@ The fields of the config are listed [here](FIELDS.md)
 ### Arguments/Flags
     `-d` or `--debug`: Starts the app in debug mode.
     `-c {num}` or `--config {num}`: The config that the app starts in. {num} is the index.
+    `-p {path} or --path {path}`: Load a custom config path. If it can't find the path, it will try to create it in the path.
 
 ### Key
 The keys are listed [here](KEYS.md).
