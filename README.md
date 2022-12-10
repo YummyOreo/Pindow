@@ -5,7 +5,7 @@
 
 **[Config](#Config)**
 
-**[Config](#Contributing)**
+**[Contributing](#Contributing)**
 
 # About
 Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
@@ -25,7 +25,7 @@ Example:
 {
     "configs": [
         {
-            "name": "Work"
+            "name": "Work",
             "apps": [
                 {
                     "app_path": "alacritty",
@@ -65,12 +65,12 @@ There are no dependencies that will not be installed by cargo!
 > Bar windows requirement as it uses the windows api
 
 ## Building
-Run `cargo build`!
+Run `cargo build --release`!
 
 # ToDo
-- [ ] Help menu with `--help`
-- [ ] Get path of config with flags
-- [ ] Load different configs with flags
+- [ ] Help menu with `--help` (Will not start the app)
+- [ ] Get path of config with flags (Will not start the app)
+- [ ] Load different configs files with flags
 - [ ] Keybind to pin apps
 - [ ] Add custom keybinds to a specific apps
-- [ ] GUI
+- [ ] GUI?
