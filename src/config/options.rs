@@ -30,7 +30,8 @@ pub struct Args {
     pub debug: Option<bool>,
     pub start_config: Option<usize>,
     pub path: Option<String>,
-    pub help: Option<bool>
+    pub help: Option<bool>,
+    pub get_path: Option<bool>
 }
 
 #[derive(Debug, Clone)]

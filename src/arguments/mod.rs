@@ -8,7 +8,8 @@ pub struct Arguments {
     pub debug: bool,
     pub start_config: Option<usize>,
     pub path: Option<String>,
-    pub help: bool
+    pub help: bool,
+    pub get_path: bool,
 }
 
 pub fn get_args() -> Arguments {
@@ -18,6 +19,8 @@ pub fn get_args() -> Arguments {
         start_config: config::matches_start(&args),
         path: config::matches_path(&args),
         help: info::matches_help(&args),
+        get_path: info::matches_path(&args),
+
     };
     return arguments;
 }

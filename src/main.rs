@@ -16,7 +16,8 @@ fn load_current_config() -> config::options::Configurations {
         debug: Some(arguments.debug),
         start_config: arguments.start_config,
         path: arguments.path,
-        help: Some(arguments.help)
+        help: Some(arguments.help),
+        get_path: Some(arguments.get_path)
     };
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();
@@ -28,6 +29,10 @@ fn load_current_config() -> config::options::Configurations {
 fn check_info(args: config::options::Args) {
     match args.help {
         Some(true) => info::help::print_help_menue(),
+        _ => {}
+    }
+    match args.get_path {
+        Some(true) => info::help::print_config_path(),
         _ => {}
     }
 }

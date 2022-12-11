@@ -54,6 +54,8 @@ The fields of the config are listed [here](FIELDS.md)
     `-d` or `--debug`: Starts the app in debug mode.
     `-c {num}` or `--config {num}`: The config that the app starts in. {num} is the index.
     `-p {path} or --path {path}`: Load a custom config path. If it can't find the path, it will try to create it in the path.
+    `--get-path `: Prints the path
+    `-h or --help `: Prints the help menue
 
 ### Key
 The keys are listed [here](KEYS.md).
@@ -70,7 +72,7 @@ Run `cargo build --release`!
 
 # ToDo
 #### v1.0.0
-- [ ] Help menu with `--help` (Will not start the app)
+- [x] Help menu with `--help` (Will not start the app)
 - [ ] Get path of config with flags (Will not start the app)
 - [x] Load different configs files with flags
 - [ ] Keybind to pin apps
