@@ -29,7 +29,7 @@ pub struct Config {
 pub struct Args {
     pub debug: Option<bool>,
     pub start_config: Option<usize>,
-    pub path: Option<String>
+    pub path: Option<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -46,8 +46,8 @@ impl Configurations {
 
     pub fn set_current(&mut self, index: usize) -> Result<Config, error::config::SetConfigError> {
         if index >= self.configs.len() {
-            Err(error::config::SetConfigError{
-                num: (index + 1) as i32
+            Err(error::config::SetConfigError {
+                num: (index + 1) as i32,
             })
         } else {
             self.current_config = index;

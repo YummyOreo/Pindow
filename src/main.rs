@@ -2,10 +2,10 @@ use device_query::{DeviceQuery, DeviceState, Keycode};
 
 mod arguments;
 mod config;
+pub mod error;
 mod keybindings;
 mod run;
 mod window;
-pub mod error;
 
 fn load_current_config() -> config::options::Configurations {
     let arguments = arguments::get_args();
@@ -32,6 +32,21 @@ fn get_key_handler(timeout: u128) -> keybindings::handler::Handler {
     }
 }
 
+fn keybinding_update(
+    keys: Vec<Keycode>,
+    key_handler: &mut keybindings::handler::Handler,
+    user_config: &mut config::options::Configurations,
+) {
+    key_handler.set_current_keys(keys.clone());
+    key_handler.check_num();
+    key_handler.check_num_time();
+
+    if let Some(keybind_run) = key_handler.check_keybinds(&user_config) {
+        run::run_keybind(keybind_run, user_config, key_handler);
+        key_handler.reset_num();
+    }
+}
+
 fn main_loop(
     user_config: &mut config::options::Configurations,
     key_handler: &mut keybindings::handler::Handler,
@@ -43,14 +58,7 @@ fn main_loop(
         let key_update: bool = key_handler.check_update(&keys);
 
         if key_update {
-            key_handler.set_current_keys(keys.clone());
-            key_handler.check_num();
-            key_handler.check_num_time();
-
-            if let Some(keybind_run) = key_handler.check_keybinds(&user_config) {
-                run::run_keybind(keybind_run, user_config, key_handler);
-                key_handler.reset_num();
-            }
+            keybinding_update(keys, key_handler, user_config);
         }
     }
 }

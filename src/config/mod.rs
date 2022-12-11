@@ -1,5 +1,5 @@
-use serde_json;
 use directories::BaseDirs;
+use serde_json;
 
 mod load;
 pub mod options;
