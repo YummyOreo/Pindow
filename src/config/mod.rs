@@ -3,6 +3,7 @@ use serde_json;
 
 pub mod load;
 pub mod options;
+pub mod write;
 
 pub fn load(path: Option<String>) -> options::Configurations {
     let mut path = path;
