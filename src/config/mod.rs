@@ -1,7 +1,7 @@
 use directories::BaseDirs;
 use serde_json;
 
-mod load;
+pub mod load;
 pub mod options;
 
 pub fn load(path: Option<String>) -> options::Configurations {
