@@ -1,12 +1,12 @@
 use device_query::Keycode;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::error;
 
 #[derive(Debug, Clone, Default)]
 pub struct Keybindings {
     pub app_num: Vec<Keycode>,
-    pub tab_app: Vec<Keycode>,
+    pub add_app: Vec<Keycode>,
     pub change_config: Vec<Keycode>,
     pub debug_close: Vec<Keycode>,
 }
@@ -65,21 +65,21 @@ impl Configurations {
     }
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct KeybindingsStr {
     pub app_num: Option<Vec<String>>,
-    pub tab_app: Option<Vec<String>>,
+    pub add_app: Option<Vec<String>>,
     pub change_config: Option<Vec<String>>,
     pub debug_close: Option<Vec<String>>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct AppCommandStr {
     pub app_path: String,
     pub args: Option<Vec<String>>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct ConfigStr {
     pub name: Option<String>,
     pub apps: Option<Vec<AppCommandStr>>,
@@ -87,7 +87,7 @@ pub struct ConfigStr {
     pub keybindings: Option<KeybindingsStr>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct ConfigurationsStr {
     pub configs: Vec<ConfigStr>,
 }

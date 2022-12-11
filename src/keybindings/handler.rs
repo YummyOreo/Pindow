@@ -112,6 +112,8 @@ impl Handler {
             Some(KeybindRun::RunAppNum)
         } else if self.check_keybind(&keybindings.change_config) {
             Some(KeybindRun::ChangeConfig)
+        } else if self.check_keybind(&keybindings.add_app) {
+            Some(KeybindRun::AddApp)
         } else {
             None
         }

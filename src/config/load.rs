@@ -46,6 +46,19 @@ fn map_keybindings(keybindings_str: options::KeybindingsStr) -> options::Keybind
         }
     }
 
+    let mut add_app: Vec<Keycode>;
+    match keybindings_str.add_app {
+        None => {
+            add_app = vec![Keycode::LControl, Keycode::Apostrophe];
+        }
+        Some(s) => {
+            add_app = Vec::new();
+            for key in s {
+                add_app.insert(0, keycode_from_string(&key).unwrap());
+            }
+        }
+    }
+
     let mut change_config: Vec<Keycode>;
     match keybindings_str.change_config {
         None => {
@@ -59,22 +72,9 @@ fn map_keybindings(keybindings_str: options::KeybindingsStr) -> options::Keybind
         }
     };
 
-    let mut tab_app: Vec<Keycode>;
-    match keybindings_str.tab_app {
-        None => {
-            tab_app = vec![Keycode::LControl, Keycode::Apostrophe];
-        }
-        Some(s) => {
-            tab_app = Vec::new();
-            for key in s {
-                tab_app.insert(0, keycode_from_string(&key).unwrap());
-            }
-        }
-    };
-
     options::Keybindings {
         app_num,
-        tab_app,
+        add_app,
         change_config,
         debug_close,
     }
@@ -86,7 +86,7 @@ pub fn map_config(options: options::ConfigStr, index: usize) -> options::Config 
         None => {
             keybindings = options::KeybindingsStr {
                 app_num: None,
-                tab_app: None,
+                add_app: None,
                 change_config: None,
                 debug_close: None,
             };

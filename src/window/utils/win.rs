@@ -1,9 +1,8 @@
 use notify_rust;
-use regex::Regex;
 use windows::{
-    Win32::Foundation::HANDLE,
+    Win32::Foundation::{HANDLE, HINSTANCE},
     Win32::Foundation::{CloseHandle, HWND},
-    Win32::System::ProcessStatus::K32GetProcessImageFileNameA,
+    Win32::System::ProcessStatus::{K32GetProcessImageFileNameA, K32GetModuleFileNameExA},
     Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
     Win32::UI::WindowsAndMessaging,
 };
@@ -13,17 +12,15 @@ pub fn get_process_file(handle: HANDLE) -> Option<String> {
     let mut wierd_path: [u8; 512] = [0; 512];
     let path_len: u32;
     unsafe {
-        path_len = K32GetProcessImageFileNameA(handle, &mut wierd_path);
+        path_len = K32GetModuleFileNameExA(handle, HINSTANCE(0), &mut wierd_path);
     };
     if path_len == 0 {
         return None;
     }
 
-    let wierd_path = String::from_utf8_lossy(&wierd_path[..path_len as usize]);
-    let re = Regex::new(r"\\Device\\HarddiskVolume[0-9]+\\").unwrap();
-    let path = re.replace_all(&wierd_path, "").to_string();
+    let path = String::from_utf8_lossy(&wierd_path[..path_len as usize]);
 
-    Some(path)
+    Some(path.to_string())
 }
 
 pub fn get_id(window: isize) -> u32 {
