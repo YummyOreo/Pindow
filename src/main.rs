@@ -2,10 +2,11 @@ use device_query::{DeviceQuery, DeviceState, Keycode};
 
 mod arguments;
 mod config;
-pub mod error;
+mod error;
 mod keybindings;
 mod run;
 mod window;
+mod info;
 
 fn load_current_config() -> config::options::Configurations {
     let arguments = arguments::get_args();
@@ -15,14 +16,20 @@ fn load_current_config() -> config::options::Configurations {
         debug: Some(arguments.debug),
         start_config: arguments.start_config,
         path: arguments.path,
+        help: Some(arguments.help)
     };
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();
     }
 
-    println!("Current Config: {}", user_config.get_current().name);
-
     user_config
+}
+
+fn check_info(args: config::options::Args) {
+    match args.help {
+        Some(true) => info::help::print_help_menue(),
+        _ => {}
+    }
 }
 
 fn get_key_handler(timeout: u128) -> keybindings::handler::Handler {
@@ -72,6 +79,11 @@ fn main() {
     // get the main window of the process (by using class name GetWindow)
     // focus it by bringing it to the top of the Z-stack
     let mut user_config = load_current_config();
+
+    check_info(user_config.args.clone());
+
+    println!("Current Config: {}", user_config.get_current().name);
+
     let mut key_handler = get_key_handler(user_config.get_current().timeout);
 
     main_loop(&mut user_config, &mut key_handler);
