@@ -68,11 +68,14 @@ fn add_and_write(path: String, process_path: String, user_config: &Configuration
 }
 
 pub fn add_config(user_config: &Configurations) {
-    if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
-        return;
-    }
-    if let Ok(process_path) = utils::get_current_path() {
-        let path = get_path(&user_config);
-        add_and_write(path, process_path, user_config);
-    }
+    let user_config = user_config.clone();
+    let _ = thread::spawn(move || {
+        if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
+            return;
+        }
+        if let Ok(process_path) = utils::get_current_path() {
+            let path = get_path(&user_config);
+            add_and_write(path, process_path, &user_config);
+        }
+    });
 }
