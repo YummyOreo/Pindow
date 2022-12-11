@@ -40,30 +40,39 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) {
     }
 }
 
+fn get_path(user_config: &Configurations) -> String {
+    let mut path = user_config.args.path.clone();
+
+    if let None = path {
+        let base_dirs = BaseDirs::new().unwrap();
+        path = Some(base_dirs.data_dir().to_str().unwrap().to_string() + "\\pindow\\config.json");
+    }
+    path.unwrap()
+}
+
+fn add_and_write(path: String, process_path: String, user_config: &Configurations) {
+    let str = config::load::load_string(path.clone());
+
+    let mut data: config::options::ConfigurationsStr = serde_json::from_str(&str).unwrap();
+    let mut configs = data.configs;
+    let mut current_config = &mut configs[user_config.current_config];
+    if let Some(apps) = &mut current_config.apps {
+        apps.insert(apps.len(), config::options::AppCommandStr { app_path: process_path, args: None });
+
+        current_config.apps = Some(apps.clone());
+        configs[user_config.current_config] = current_config.clone();
+        data.configs = configs;
+
+        config::write::write_to_file(path, data);
+    }
+}
+
 pub fn add_config(user_config: &Configurations) {
-    if let None = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
-        if let Ok(process_path) = utils::get_current_path() {
-            let mut path = user_config.args.path.clone();
-
-            if let None = path {
-                let base_dirs = BaseDirs::new().unwrap();
-                path = Some(base_dirs.data_dir().to_str().unwrap().to_string() + "\\pindow\\config.json");
-            }
-            let str = config::load::load_string(path.clone().unwrap());
-
-            let mut data: config::options::ConfigurationsStr = serde_json::from_str(&str).unwrap();
-            let mut configs = data.configs;
-            let mut current_config = &mut configs[user_config.current_config];
-            if let Some(apps) = &mut current_config.apps {
-                apps.insert(apps.len(), config::options::AppCommandStr { app_path: process_path, args: None });
-
-                current_config.apps = Some(apps.clone());
-                configs[user_config.current_config] = current_config.clone();
-                data.configs = configs;
-
-                let str = serde_json::to_string(&data).unwrap();
-                std::fs::write(path.unwrap(), str).expect("Unable to write file");
-            }
-        }
+    if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
+        return;
+    }
+    if let Ok(process_path) = utils::get_current_path() {
+        let path = get_path(&user_config);
+        add_and_write(path, process_path, user_config);
     }
 }
