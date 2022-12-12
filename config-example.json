@@ -1,1 +1,48 @@
-{"configs":[{"name":"Work","apps":[{"app_path":"alacritty","args":["--working-directory","D:/Desktop 2","--hold"]},{"app_path":"C:\\Program Files\\Mozilla Firefox\\firefox.exe","args":null},{"app_path":"C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe","args":null}],"timeout":5,"keybindings":{"app_num":null,"add_app":null,"change_config":null,"debug_close":["Key1","RControl"]}},{"name":"Chill","apps":[{"app_path":"C:\\Program Files\\Mozilla Firefox\\firefox.exe","args":null},{"app_path":"C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe","args":null},{"app_path":"alacritty","args":["--working-directory","D:/Desktop 2","--hold"]},{"app_path":"C:\\Users\\OreoD\\AppData\\Local\\Programs\\cron-web\\Cron.exe","args":null}],"timeout":10,"keybindings":null},{"name":"Nothing","apps":null,"timeout":null,"keybindings":null}]}
+{
+  "configs": [
+    {
+      "name": "Work",
+      "apps": [
+        {
+          "app_path": "alacritty",
+          "args": ["--working-directory", "D:/Desktop 2", "--hold"]
+        },
+        {
+          "app_path": "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
+          "args": null
+        },
+        {
+          "app_path": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe",
+          "args": null
+        }
+      ],
+      "timeout": 5,
+      "keybindings": {
+        "app_num": null,
+        "add_app": null,
+        "change_config": null,
+        "debug_close": ["Key1", "RControl"]
+      }
+    },
+    {
+      "name": "Chill",
+      "apps": [
+        {
+          "app_path": "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
+          "args": null
+        },
+        {
+          "app_path": "C:\\Users\\OreoD\\AppData\\Local\\Obsidian\\Obsidian.exe",
+          "args": null
+        },
+        {
+          "app_path": "alacritty",
+          "args": ["--working-directory", "D:/Desktop 2", "--hold"]
+        }
+      ],
+      "timeout": 10,
+      "keybindings": null
+    },
+    { "name": "Nothing", "apps": null, "timeout": null, "keybindings": null }
+  ]
+}
