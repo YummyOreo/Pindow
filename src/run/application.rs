@@ -50,19 +50,29 @@ fn get_path(user_config: &Configurations) -> String {
     path.unwrap()
 }
 
-fn add_to_config(user_config: &mut Configurations, path: String) {
+fn add_to_config(user_config: &mut Configurations, key_handler: &Handler, path: String) {
     let app_commands = &mut user_config.configs[user_config.current_config].app_commands;
-    app_commands.insert(app_commands.len(), config::options::AppCommand { app: path, args: vec![] })
+
+    let mut index = app_commands.len();
+    if key_handler.num != 0 && key_handler.num < index as i8{
+        index = key_handler.num as usize;
+    }
+    app_commands.insert(index, config::options::AppCommand { app: path, args: vec![] })
 }
 
-fn add_to_file(path: String, process_path: String, user_config: &Configurations) {
+fn add_to_file(path: String, process_path: String, user_config: &Configurations, key_handler: &Handler) {
     let str = config::load::load_string(path.clone());
 
     let mut data: config::options::ConfigurationsStr = serde_json::from_str(&str).unwrap();
     let mut configs = data.configs;
     let mut current_config = &mut configs[user_config.current_config];
     if let Some(apps) = &mut current_config.apps {
-        apps.insert(apps.len(), config::options::AppCommandStr { app_path: process_path, args: None });
+        let mut index = apps.len();
+        if key_handler.num != 0 && key_handler.num < index as i8{
+            index = key_handler.num as usize;
+        }
+
+        apps.insert(index, config::options::AppCommandStr { app_path: process_path, args: None });
 
         current_config.apps = Some(apps.clone());
         configs[user_config.current_config] = current_config.clone();
@@ -72,18 +82,19 @@ fn add_to_file(path: String, process_path: String, user_config: &Configurations)
     }
 }
 
-pub fn add_config(user_config: &mut Configurations) {
+pub fn add_config(user_config: &mut Configurations, key_handler: &Handler) {
         if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
             return;
         }
         if let Ok(process_path) = utils::get_current_path() {
-            add_to_config(user_config, process_path.clone());
+            add_to_config(user_config, key_handler, process_path.clone());
 
             let user_config = user_config.clone();
+            let key_handler = key_handler.clone();
             let _ = thread::spawn(move || {
                 let path = get_path(&user_config);
 
-                add_to_file(path, process_path, &user_config);
+                add_to_file(path, process_path, &user_config, &key_handler);
             });
         }
 }

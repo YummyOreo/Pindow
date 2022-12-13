@@ -20,7 +20,7 @@ pub fn run_keybind(
 ) {
     match keybind {
         KeybindRun::RunAppNum => application::run_app(&user_configs.get_current(), key_handler),
-        KeybindRun::AddApp => application::add_config(user_configs),
+        KeybindRun::AddApp => application::add_config(user_configs, key_handler),
         KeybindRun::ChangeConfig => config::change_config(user_configs, key_handler),
         KeybindRun::DebugQuit => {
             println!("quit");
