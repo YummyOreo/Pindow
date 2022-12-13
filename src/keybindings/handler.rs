@@ -4,7 +4,7 @@ use std::time::SystemTime;
 use crate::config::options;
 use crate::run::KeybindRun;
 
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone)]
 pub struct Handler {
     pub num: i8,
     pub num_time: Option<SystemTime>,
