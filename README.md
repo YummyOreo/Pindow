@@ -71,11 +71,6 @@ There are no dependencies that will not be installed by cargo!
 Run `cargo build --release`!
 
 # ToDo
-#### v1.0.0
-- [x] Help menu with `--help` (Will not start the app)
-- [x] Get path of config with flags (Will not start the app)
-- [x] Load different configs files with flags
-- [x] Keybind to pin apps
 #### v1.1.0
 - [ ] Tray stuff (ie minimize to tray by default and tray menue)
 - [ ] Add custom keybinds to a specific apps
