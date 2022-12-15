@@ -3,10 +3,10 @@ use device_query::{DeviceQuery, DeviceState, Keycode};
 mod arguments;
 mod config;
 mod error;
+mod info;
 mod keybindings;
 mod run;
 mod window;
-mod info;
 
 fn load_current_config() -> config::options::Configurations {
     let arguments = arguments::get_args();
@@ -17,10 +17,11 @@ fn load_current_config() -> config::options::Configurations {
         start_config: arguments.start_config,
         path: arguments.path,
         help: Some(arguments.help),
-        get_path: Some(arguments.get_path)
+        get_path: Some(arguments.get_path),
     };
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();
+        println!();
     }
 
     user_config
