@@ -3,7 +3,7 @@
 {
     "keymaps": {
         {
-            "keys": ["\'"],
+            "keys": ["'"],
             "modifiers": ["LCtrl"],
             "event": "AddApp"
         }
@@ -72,7 +72,7 @@ Closes the app if in debug mode.
 `None`
 
 ### "SetConfig":
-`{number} LCtrl + \``
+`{number} LCtrl + ``
 
 ### "SetConfig{number}":
 `None`

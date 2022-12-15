@@ -57,8 +57,8 @@ The fields of the config are listed [here](FIELDS.md)
     `--get-path `: Prints the path of the config
     `-h or --help `: Prints the help menue
 
-### Key
-The keys are listed [here](KEYS.md).
+### Keymapings
+Documentation for keymaping are listed [here](KEYMAP.md)
 
 # Contributing
 Just open a issue or pr to a existing issue and i'll see if I want it.
