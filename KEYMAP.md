@@ -3,8 +3,8 @@
 {
     "keymaps": {
         {
-            "keys": "\'",
-            "modifiers": "Ctrl",
+            "keys": ["\'"],
+            "modifiers": ["LCtrl"],
             "event": "AddApp"
         }
     }
@@ -13,8 +13,11 @@
 
 ## Modifiers:
 - Ctrl
+- R/LCtrl
 - Alt
+- R/LAlt
 - Shift
+- R/LShift
 
 ## Events:
 ### "OpenApp":
@@ -53,4 +56,27 @@ Sets the config to the given index.
 Closes the app if in debug mode.
 
 # Defaults:
+### "OpenApp":
+`{number} LCtrl + ,`
+
+### "OpenApp{number}":
+`None`
+
+### "AddApp":
+`{number} LCtrl + ,`
+
+### "IncrementConfig":
+`None`
+
+### "DecrementConfig":
+`None`
+
+### "SetConfig":
+`{number} LCtrl + \``
+
+### "SetConfig{number}":
+`None`
+
+### "DebugClose":
+`RCtrl + RAlt`
 
