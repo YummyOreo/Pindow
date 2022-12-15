@@ -42,10 +42,15 @@ Increments the current config
 
 Increments the current config
 
-### "SetConfig":
+### "IncrementSetConfig":
 
 Sets the current config to givent a number.
-If no number is provided (or 0), it will spawn the current focused app (if in the list).
+If no number is provided (or 0), it will incement the current config.
+
+### "DecrementSetConfig":
+
+Sets the current config to givent a number.
+If no number is provided (or 0), it will decement the current config.
 
 ### "SetConfig{number}":
 
@@ -71,8 +76,11 @@ Closes the app if in debug mode.
 ### "DecrementConfig":
 `None`
 
-### "SetConfig":
+### "IncrementSetConfig":
 `{number} LCtrl + ``
+
+### DecrementSetConfig":
+`{number} LCtrl + ~`
 
 ### "SetConfig{number}":
 `None`
