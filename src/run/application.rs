@@ -3,7 +3,7 @@ use std::process::Command;
 use std::thread;
 use serde_json;
 
-use crate::config::options::{Config, Configurations};
+use crate::config::options::{Config, Options};
 use crate::keybindings::handler::Handler;
 use crate::run::utils;
 use crate::window::utils::win;
@@ -11,6 +11,7 @@ use crate::config;
 
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
+    println!("{num:?}");
 
     if num > 9 {
         return;
@@ -40,7 +41,7 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) {
     }
 }
 
-fn get_path(user_config: &Configurations) -> String {
+fn get_path(user_config: &Options) -> String {
     let mut path = user_config.args.path.clone();
 
     if let None = path {
@@ -50,7 +51,7 @@ fn get_path(user_config: &Configurations) -> String {
     path.unwrap()
 }
 
-fn add_to_config(user_config: &mut Configurations, key_handler: &Handler, path: String) {
+fn add_to_config(user_config: &mut Options, key_handler: &Handler, path: String) {
     let app_commands = &mut user_config.configs[user_config.current_config].app_commands;
 
     let mut index = app_commands.len();
@@ -60,10 +61,10 @@ fn add_to_config(user_config: &mut Configurations, key_handler: &Handler, path: 
     app_commands.insert(index, config::options::AppCommand { app: path, args: vec![] })
 }
 
-fn add_to_file(path: String, process_path: String, user_config: &Configurations, key_handler: &Handler) {
+fn add_to_file(path: String, process_path: String, user_config: &Options, key_handler: &Handler) {
     let str = config::load::load_string(path.clone());
 
-    let mut data: config::options::ConfigurationsStr = serde_json::from_str(&str).unwrap();
+    let mut data: config::options::OptionsStr = serde_json::from_str(&str).unwrap();
     let mut configs = data.configs;
     let mut current_config = &mut configs[user_config.current_config];
     if let Some(apps) = &mut current_config.apps {
@@ -82,7 +83,7 @@ fn add_to_file(path: String, process_path: String, user_config: &Configurations,
     }
 }
 
-pub fn add_config(user_config: &mut Configurations, key_handler: &Handler) {
+pub fn add_config(user_config: &mut Options, key_handler: &Handler) {
         if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
             return;
         }

@@ -6,7 +6,7 @@ pub mod options;
 pub mod write;
 pub mod key;
 
-pub fn load(path: Option<String>) -> options::Configurations {
+pub fn load(path: Option<String>) -> options::Options {
     let mut path = path;
 
     if let None = path {
@@ -15,8 +15,8 @@ pub fn load(path: Option<String>) -> options::Configurations {
     }
     let str = load::load_string(path.unwrap());
 
-    let data: options::ConfigurationsStr = serde_json::from_str(&str).unwrap();
-    let config = load::map_configurations(data.clone());
+    let data: options::OptionsStr = serde_json::from_str(&str).unwrap();
+    let config = load::map_options(data.clone());
 
     config
 }
