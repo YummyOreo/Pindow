@@ -20,8 +20,59 @@ pub fn make_file(file: &String) {
     std::fs::write(file, "{\"configs\": [{}]}").expect("Unable to write file");
 }
 
-fn map_keymaps(maps: Option<options::KeybindingsStr>) -> Vec<key::Keybind> {
-    vec![]
+fn map_defaults(keymaps: Vec<key::Keybind>) -> Vec<key::Keybind> {
+    let mut keymaps_new = keymaps.clone();
+    let defaults = vec![
+        key::Keybind {
+            keys: vec![Keycode::LControl, Keycode::Comma],
+            event: key::Event::OpenApp
+        },
+        key::Keybind {
+            keys: vec![Keycode::LControl, Keycode::Apostrophe],
+            event: key::Event::AddApp
+        },
+        key::Keybind {
+            keys: vec![Keycode::LControl, Keycode::Grave],
+            event: key::Event::IncrementSetConfig
+        },
+        key::Keybind {
+            keys: vec![Keycode::RControl, Keycode::RAlt],
+            event: key::Event::DebugClose
+        }
+    ];
+    for map in defaults {
+        let mut contains = false;
+        for keymap in &keymaps {
+            if &map.event == &keymap.event {
+                contains = true;
+            }
+        }
+        if !contains {
+            keymaps_new.push(map.clone());
+        }
+    }
+    keymaps_new
+}
+
+fn map_keymaps(maps: Vec<options::KeybindingsStr>) -> Vec<key::Keybind> {
+    let mut keymaps: Vec<key::Keybind> = vec![];
+    for map in maps {
+        let mut keys: Vec<Keycode> = vec![];
+        for key in map.keys {
+            keys.push(keycode_from_string(&key[0..key.len()]).unwrap());
+        }
+
+        for key in map.modifiers.unwrap_or(vec![]) {
+            keys.push(keycode_from_string(&key).unwrap());
+        }
+
+        let event = match_event(&map.event).unwrap();
+        keymaps.push(key::Keybind{
+            keys,
+            event
+        })
+    }
+    map_defaults(keymaps)
 }
 
 fn map_app_commands(app_commands_str: Option<Vec<options::AppCommandStr>>) -> Vec<options::AppCommand> {
@@ -44,22 +95,50 @@ fn map_config(config_str: options::ConfigStr, index: i32) -> options::Config {
     options::Config {
         name: config_str.name.unwrap_or(index.to_string()),
         app_commands: map_app_commands(config_str.apps),
-        timeout: config_str.timeout.unwrap_or(5),
-        keymaps: map_keymaps(config_str.keymaps),
+        timeout: config_str.timeout.unwrap_or(5) * 1000,
+        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![])),
     }
 }
 
 pub fn map_options(config_str: options::OptionsStr) -> options::Options {
     let mut configs: Vec<options::Config> = Vec::default();
+
+    let mut index = 0;
+    for config in config_str.configs {
+        configs.push(map_config(config, index));
+        index += 1;
+    }
+
     let options = options::Options {
         configs,
         current_config: 0,
         args: Default::default(),
     };
 
-    for i in config_str.configs {
-    }
     options
+}
+
+fn match_event(s: &str) -> Option<key::Event> {
+    match s {
+        "OpenApp" => Some(key::Event::OpenApp),
+        "AddApp" => Some(key::Event::AddApp),
+        "IncrementConfig" => Some(key::Event::IncementConfig),
+        "DecrementConfig" => Some(key::Event::DecrementConfig),
+        "IncrementSetConfig" => Some(key::Event::IncrementSetConfig),
+        "DecrementSetConfig" => Some(key::Event::DecrementSetConfig),
+        "DebugClose" => Some(key::Event::DebugClose),
+        _ => {
+            if s.starts_with("OpenApp") {
+                let s = s.replace("OpenApp", "");
+                Some(key::Event::OpenAppNum(s.to_string().parse::<usize>().unwrap()))
+            } else if s.starts_with("SetConfig") {
+                let s = s.replace("SetConfig", "");
+                Some(key::Event::SetConfigNum(s.to_string().parse::<usize>().unwrap()))
+            } else {
+                None
+            }
+        }
+    }
 }
 
 fn keycode_from_string(s: &str) -> Option<Keycode> {
@@ -134,7 +213,7 @@ fn keycode_from_string(s: &str) -> Option<Keycode> {
         "PageDown" => Some(Keycode::PageDown),
         "Insert" => Some(Keycode::Insert),
         "Delete" => Some(Keycode::Delete),
-        "~" => Some(Keycode::Grave),
+        "`" => Some(Keycode::Grave),
         "-" => Some(Keycode::Minus),
         "=" => Some(Keycode::Equal),
         "[" => Some(Keycode::LeftBracket),

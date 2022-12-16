@@ -1,6 +1,6 @@
 use device_query::Keycode;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Event {
     OpenApp,
     OpenAppNum(usize),
@@ -15,6 +15,6 @@ pub enum Event {
 
 #[derive(Debug, Clone)]
 pub struct Keybind {
-    keys: Vec<Keycode>,
-    event: Event
+    pub keys: Vec<Keycode>,
+    pub event: Event
 }

@@ -68,7 +68,7 @@ Closes the app if in debug mode.
 `None`
 
 ### "AddApp":
-`{number} LCtrl + ,`
+`{number} LCtrl + '`
 
 ### "IncrementConfig":
 `None`
@@ -80,7 +80,7 @@ Closes the app if in debug mode.
 `{number} LCtrl + ``
 
 ### DecrementSetConfig":
-`{number} LCtrl + ~`
+`None`
 
 ### "SetConfig{number}":
 `None`

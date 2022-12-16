@@ -52,7 +52,7 @@ impl Options {
 #[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct KeybindingsStr {
     pub keys: Vec<String>,
-    pub modifers: Vec<String>,
+    pub modifiers: Option<Vec<String>>,
     pub event: String
 }
 
@@ -67,7 +67,7 @@ pub struct ConfigStr {
     pub name: Option<String>,
     pub apps: Option<Vec<AppCommandStr>>,
     pub timeout: Option<u128>,
-    pub keymaps: Option<KeybindingsStr>,
+    pub keymaps: Option<Vec<KeybindingsStr>>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
