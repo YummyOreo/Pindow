@@ -1,8 +1,8 @@
-use crate::config::options::Configurations;
+use crate::config::options::Options;
 use crate::keybindings::handler::Handler;
 use crate::window::utils::win::popup;
 
-pub fn change_config(user_configs: &mut Configurations, key_handler: &mut Handler) {
+pub fn change_config(user_configs: &mut Options, key_handler: &mut Handler) {
     let num = TryInto::<usize>::try_into(key_handler.num).unwrap();
 
     if num > 9 {

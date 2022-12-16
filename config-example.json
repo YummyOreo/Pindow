@@ -17,12 +17,13 @@
         }
       ],
       "timeout": 5,
-      "keybindings": {
-        "app_num": null,
-        "add_app": null,
-        "change_config": null,
-        "debug_close": ["Key1", "RControl"]
-      }
+      "keymaps": [
+          {
+          "keys": ["1"],
+          "modifiers": ["RCtrl"],
+          "event": "DebugClose"
+          }
+      ]
     },
     {
       "name": "Chill",
@@ -40,9 +41,8 @@
           "args": ["--working-directory", "D:/Desktop 2", "--hold"]
         }
       ],
-      "timeout": 10,
-      "keybindings": null
+      "timeout": 10
     },
-    { "name": "Nothing", "apps": null, "timeout": null, "keybindings": null }
+    { "name": "Nothing", "apps": null, "timeout": null }
   ]
 }

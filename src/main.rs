@@ -8,17 +8,12 @@ mod keybindings;
 mod run;
 mod window;
 
-fn load_current_config() -> config::options::Configurations {
+fn load_current_config() -> config::options::Options {
     let arguments = arguments::get_args();
     let mut user_config = config::load(arguments.path.clone());
 
-    user_config.args = config::options::Args {
-        debug: Some(arguments.debug),
-        start_config: arguments.start_config,
-        path: arguments.path,
-        help: Some(arguments.help),
-        get_path: Some(arguments.get_path),
-    };
+    user_config.args = arguments;
+
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();
         println!();
@@ -27,14 +22,13 @@ fn load_current_config() -> config::options::Configurations {
     user_config
 }
 
-fn check_info(args: config::options::Args) {
-    match args.help {
-        Some(true) => info::help::print_help_menue(),
-        _ => {}
+fn check_info(args: arguments::Arguments) {
+    if args.help {
+        info::help::print_help_menue()
     }
-    match args.get_path {
-        Some(true) => info::help::print_config_path(),
-        _ => {}
+
+    if args.get_path {
+        info::help::print_config_path();
     }
 }
 
@@ -48,7 +42,7 @@ fn get_key_handler(timeout: u128) -> keybindings::handler::Handler {
 fn keybinding_update(
     keys: Vec<Keycode>,
     key_handler: &mut keybindings::handler::Handler,
-    user_config: &mut config::options::Configurations,
+    user_config: &mut config::options::Options,
 ) {
     key_handler.set_current_keys(keys.clone());
     key_handler.check_num();
@@ -61,7 +55,7 @@ fn keybinding_update(
 }
 
 fn main_loop(
-    user_config: &mut config::options::Configurations,
+    user_config: &mut config::options::Options,
     key_handler: &mut keybindings::handler::Handler,
 ) {
     let device_state = DeviceState::new();

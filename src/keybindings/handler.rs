@@ -2,9 +2,9 @@ use device_query::Keycode;
 use std::time::SystemTime;
 
 use crate::config::options;
-use crate::run::KeybindRun;
+use crate::config::key;
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct Handler {
     pub num: i8,
     pub num_time: Option<SystemTime>,
@@ -103,19 +103,15 @@ impl Handler {
         self.current_keys = keys;
     }
 
-    pub fn check_keybinds(&self, user_config: &options::Configurations) -> Option<KeybindRun> {
-        let keybindings = &user_config.get_current().key_bindings;
+    pub fn check_keybinds(&self, user_config: &options::Options) -> Option<key::Event> {
+        let keymaps = &user_config.get_current().keymaps;
 
-        if self.check_keybind(&keybindings.debug_close) && user_config.args.debug == Some(true) {
-            Some(KeybindRun::DebugQuit)
-        } else if self.check_keybind(&keybindings.app_num) {
-            Some(KeybindRun::RunAppNum)
-        } else if self.check_keybind(&keybindings.change_config) {
-            Some(KeybindRun::ChangeConfig)
-        } else if self.check_keybind(&keybindings.add_app) {
-            Some(KeybindRun::AddApp)
-        } else {
-            None
+        for keymap in keymaps {
+            if self.check_keybind(&keymap.keys) {
+                return Some(keymap.event.clone());
+            }
         }
+
+        None
     }
 }
