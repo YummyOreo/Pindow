@@ -1,8 +1,8 @@
 use device_query::Keycode;
 use std::time::SystemTime;
 
-use crate::config::options;
 use crate::config::key;
+use crate::config::options;
 
 #[derive(Default, Clone, Debug)]
 pub struct Handler {

@@ -71,13 +71,6 @@ fn main_loop(
 }
 
 fn main() {
-    // update the list of open processes every time someone tabs, but if they do it in a row, then
-    // don't,
-    // then correspond the id's to the list of apps
-    // have a pointer for the processes
-    // when tabbing
-    // get the main window of the process (by using class name GetWindow)
-    // focus it by bringing it to the top of the Z-stack
     let mut user_config = load_current_config();
 
     check_info(user_config.args.clone());

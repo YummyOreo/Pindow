@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-use crate::error;
-use crate::config::key;
 use crate::arguments::Arguments;
+use crate::config::key;
+use crate::error;
 
 #[derive(Debug, Clone, Default)]
 pub struct AppCommand {
@@ -53,7 +53,7 @@ impl Options {
 pub struct KeybindingsStr {
     pub keys: Vec<String>,
     pub modifiers: Option<Vec<String>>,
-    pub event: String
+    pub event: String,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]

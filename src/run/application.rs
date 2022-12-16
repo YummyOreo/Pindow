@@ -1,13 +1,13 @@
 use directories::BaseDirs;
+use serde_json;
 use std::process::Command;
 use std::thread;
-use serde_json;
 
+use crate::config;
 use crate::config::options::{Config, Options};
 use crate::keybindings::handler::Handler;
 use crate::run::utils;
 use crate::window::utils::win;
-use crate::config;
 
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
@@ -55,10 +55,16 @@ fn add_to_config(user_config: &mut Options, key_handler: &Handler, path: String)
     let app_commands = &mut user_config.configs[user_config.current_config].app_commands;
 
     let mut index = app_commands.len();
-    if key_handler.num != 0 && key_handler.num < index as i8{
+    if key_handler.num != 0 && key_handler.num < index as i8 {
         index = key_handler.num as usize;
     }
-    app_commands.insert(index, config::options::AppCommand { app: path, args: vec![] })
+    app_commands.insert(
+        index,
+        config::options::AppCommand {
+            app: path,
+            args: vec![],
+        },
+    )
 }
 
 fn add_to_file(path: String, process_path: String, user_config: &Options, key_handler: &Handler) {
@@ -69,11 +75,17 @@ fn add_to_file(path: String, process_path: String, user_config: &Options, key_ha
     let mut current_config = &mut configs[user_config.current_config];
     if let Some(apps) = &mut current_config.apps {
         let mut index = apps.len();
-        if key_handler.num != 0 && key_handler.num < index as i8{
+        if key_handler.num != 0 && key_handler.num < index as i8 {
             index = key_handler.num as usize;
         }
 
-        apps.insert(index, config::options::AppCommandStr { app_path: process_path, args: None });
+        apps.insert(
+            index,
+            config::options::AppCommandStr {
+                app_path: process_path,
+                args: None,
+            },
+        );
 
         current_config.apps = Some(apps.clone());
         configs[user_config.current_config] = current_config.clone();
@@ -84,18 +96,21 @@ fn add_to_file(path: String, process_path: String, user_config: &Options, key_ha
 }
 
 pub fn add_config(user_config: &mut Options, key_handler: &Handler) {
-        if let Some(_) = utils::get_app_by_id(&user_config.get_current(), win::get_id(win::current_window()) as isize) {
-            return;
-        }
-        if let Ok(process_path) = utils::get_current_path() {
-            add_to_config(user_config, key_handler, process_path.clone());
+    if let Some(_) = utils::get_app_by_id(
+        &user_config.get_current(),
+        win::get_id(win::current_window()) as isize,
+    ) {
+        return;
+    }
+    if let Ok(process_path) = utils::get_current_path() {
+        add_to_config(user_config, key_handler, process_path.clone());
 
-            let user_config = user_config.clone();
-            let key_handler = key_handler.clone();
-            let _ = thread::spawn(move || {
-                let path = get_path(&user_config);
+        let user_config = user_config.clone();
+        let key_handler = key_handler.clone();
+        let _ = thread::spawn(move || {
+            let path = get_path(&user_config);
 
-                add_to_file(path, process_path, &user_config, &key_handler);
-            });
-        }
+            add_to_file(path, process_path, &user_config, &key_handler);
+        });
+    }
 }

@@ -1,10 +1,10 @@
 use directories::BaseDirs;
 use serde_json;
 
+pub mod key;
 pub mod load;
 pub mod options;
 pub mod write;
-pub mod key;
 
 pub fn load(path: Option<String>) -> options::Options {
     let mut path = path;
