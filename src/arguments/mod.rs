@@ -4,6 +4,7 @@ mod config;
 mod debug;
 mod info;
 
+#[derive(Debug, Clone, Default)]
 pub struct Arguments {
     pub debug: bool,
     pub start_config: Option<usize>,

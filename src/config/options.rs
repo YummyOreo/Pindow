@@ -1,15 +1,8 @@
-use device_query::Keycode;
 use serde::{Deserialize, Serialize};
 
 use crate::error;
-
-#[derive(Debug, Clone, Default)]
-pub struct Keybindings {
-    pub app_num: Vec<Keycode>,
-    pub add_app: Vec<Keycode>,
-    pub change_config: Vec<Keycode>,
-    pub debug_close: Vec<Keycode>,
-}
+use crate::config::key;
+use crate::arguments::Arguments;
 
 #[derive(Debug, Clone, Default)]
 pub struct AppCommand {
@@ -17,31 +10,22 @@ pub struct AppCommand {
     pub args: Vec<String>,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct Config {
     pub name: String,
     pub app_commands: Vec<AppCommand>,
     pub timeout: u128,
-    pub key_bindings: Keybindings,
-}
-
-#[derive(Debug, Clone, Default)]
-pub struct Args {
-    pub debug: Option<bool>,
-    pub start_config: Option<usize>,
-    pub path: Option<String>,
-    pub help: Option<bool>,
-    pub get_path: Option<bool>
+    pub keymaps: Vec<key::Keybind>,
 }
 
 #[derive(Debug, Clone)]
-pub struct Configurations {
+pub struct Options {
     pub configs: Vec<Config>,
     pub current_config: usize,
-    pub args: Args,
+    pub args: Arguments,
 }
 
-impl Configurations {
+impl Options {
     pub fn get_current(&self) -> Config {
         self.configs[self.current_config].clone()
     }
@@ -67,10 +51,9 @@ impl Configurations {
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct KeybindingsStr {
-    pub app_num: Option<Vec<String>>,
-    pub add_app: Option<Vec<String>>,
-    pub change_config: Option<Vec<String>>,
-    pub debug_close: Option<Vec<String>>,
+    pub keys: Vec<String>,
+    pub modifers: Vec<String>,
+    pub event: String
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -84,10 +67,10 @@ pub struct ConfigStr {
     pub name: Option<String>,
     pub apps: Option<Vec<AppCommandStr>>,
     pub timeout: Option<u128>,
-    pub keybindings: Option<KeybindingsStr>,
+    pub keymaps: Option<KeybindingsStr>,
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
-pub struct ConfigurationsStr {
+pub struct OptionsStr {
     pub configs: Vec<ConfigStr>,
 }
