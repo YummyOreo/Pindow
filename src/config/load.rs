@@ -1,7 +1,7 @@
 use device_query::Keycode;
 
-use crate::config::options;
 use crate::config::key;
+use crate::config::options;
 
 pub fn load_string(file: String) -> String {
     match std::fs::read_to_string(&file) {
@@ -25,20 +25,20 @@ fn map_defaults(keymaps: Vec<key::Keybind>) -> Vec<key::Keybind> {
     let defaults = vec![
         key::Keybind {
             keys: vec![Keycode::LControl, Keycode::Comma],
-            event: key::Event::OpenApp
+            event: key::Event::OpenApp,
         },
         key::Keybind {
             keys: vec![Keycode::LControl, Keycode::Apostrophe],
-            event: key::Event::AddApp
+            event: key::Event::AddApp,
         },
         key::Keybind {
             keys: vec![Keycode::LControl, Keycode::Grave],
-            event: key::Event::IncrementSetConfig
+            event: key::Event::IncrementSetConfig,
         },
         key::Keybind {
             keys: vec![Keycode::RControl, Keycode::RAlt],
-            event: key::Event::DebugClose
-        }
+            event: key::Event::DebugClose,
+        },
     ];
     for map in defaults {
         let mut contains = false;
@@ -67,28 +67,22 @@ fn map_keymaps(maps: Vec<options::KeybindingsStr>) -> Vec<key::Keybind> {
         }
 
         let event = match_event(&map.event).unwrap();
-        keymaps.push(key::Keybind{
-            keys,
-            event
-        })
+        keymaps.push(key::Keybind { keys, event })
     }
     map_defaults(keymaps)
 }
 
-fn map_app_commands(app_commands_str: Option<Vec<options::AppCommandStr>>) -> Vec<options::AppCommand> {
-    match app_commands_str {
-        Some(apps) => {
-            let mut app_commands = vec![];
-            for i in apps {
-                app_commands.push(options::AppCommand{
-                    app: i.app_path,
-                    args: i.args.unwrap_or(vec![])
-                });
-            }
-            app_commands
-        },
-        None => vec![]
+fn map_app_commands(
+    app_commands_str: Option<Vec<options::AppCommandStr>>,
+) -> Vec<options::AppCommand> {
+    let mut app_commands = vec![];
+    for i in app_commands_str.unwrap_or(vec![]) {
+        app_commands.push(options::AppCommand {
+            app: i.app_path,
+            args: i.args.unwrap_or(vec![]),
+        });
     }
+    app_commands
 }
 
 fn map_config(config_str: options::ConfigStr, index: i32) -> options::Config {
@@ -130,10 +124,14 @@ fn match_event(s: &str) -> Option<key::Event> {
         _ => {
             if s.starts_with("OpenApp") {
                 let s = s.replace("OpenApp", "");
-                Some(key::Event::OpenAppNum(s.to_string().parse::<usize>().unwrap()))
+                Some(key::Event::OpenAppNum(
+                    s.to_string().parse::<usize>().unwrap(),
+                ))
             } else if s.starts_with("SetConfig") {
                 let s = s.replace("SetConfig", "");
-                Some(key::Event::SetConfigNum(s.to_string().parse::<usize>().unwrap()))
+                Some(key::Event::SetConfigNum(
+                    s.to_string().parse::<usize>().unwrap(),
+                ))
             } else {
                 None
             }

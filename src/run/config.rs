@@ -13,7 +13,7 @@ pub fn change_config(user_configs: &mut Options, key_handler: &mut Handler) {
         user_configs.increment();
     } else {
         match user_configs.set_current(num - 1) {
-            Ok(_) => {},
+            Ok(_) => {}
             Err(e) => {
                 println!("{}", e);
             }

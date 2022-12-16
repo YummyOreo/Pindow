@@ -10,11 +10,11 @@ pub enum Event {
     IncrementSetConfig,
     DecrementSetConfig,
     SetConfigNum(usize),
-    DebugClose
+    DebugClose,
 }
 
 #[derive(Debug, Clone)]
 pub struct Keybind {
     pub keys: Vec<Keycode>,
-    pub event: Event
+    pub event: Event,
 }
