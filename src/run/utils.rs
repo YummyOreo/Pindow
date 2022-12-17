@@ -28,7 +28,6 @@ pub fn get_app_by_id(user_config: &Config, id: isize) -> Option<usize> {
     None
 }
 
-
 #[derive(Debug)]
 pub struct GetPathError {}
 impl std::fmt::Display for GetPathError {

@@ -120,7 +120,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
             if num == 0 || num > 9 {
                 return Err(LoadConfigError::InvalidNumber(s));
             }
-            return Ok(key::Event::OpenAppNum( num));
+            return Ok(key::Event::OpenAppNum(num));
         }
         Err(LoadConfigError::InvalidNumber(s))
     } else if s.starts_with("SetConfig") {
@@ -131,7 +131,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
             if num == 0 || num > 9 {
                 return Err(LoadConfigError::InvalidNumber(s));
             }
-            return Ok(key::Event::SetConfigNum( num));
+            return Ok(key::Event::SetConfigNum(num));
         }
         Err(LoadConfigError::InvalidNumber(s))
     } else {
@@ -148,9 +148,7 @@ fn match_event(s: &str) -> Result<key::Event, LoadConfigError> {
         "IncrementSetConfig" => Ok(key::Event::IncrementSetConfig),
         "DecrementSetConfig" => Ok(key::Event::DecrementSetConfig),
         "DebugClose" => Ok(key::Event::DebugClose),
-        _ => {
-            match_event_num(s)
-        }
+        _ => match_event_num(s),
     }
 }
 

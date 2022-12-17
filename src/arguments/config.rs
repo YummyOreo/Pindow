@@ -2,10 +2,7 @@ fn get_start_config(args: &Vec<String>, pointer: usize) -> usize {
     if let Ok(num) = args[pointer + 1].parse::<usize>() {
         return num - 1;
     }
-    panic!(
-        "\"{}\" is not a number.",
-        args[pointer + 1].clone()
-    )
+    panic!("\"{}\" is not a number.", args[pointer + 1].clone())
 }
 
 pub fn matches_start(args: &Vec<String>) -> Option<usize> {
