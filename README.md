@@ -10,6 +10,11 @@
 # About
 Pindow allows you to have a list of "pinned" apps, open each one with one keybind `{num} + keybind`.
 > Currently this is only available on windows
+
+## !!Breaking Changes!!:
+#### 1.1.0:
+The field `"keybindings"` got changed to `keymaps`. And new way of setting keymaps, see [here](KEYMAP.md).
+
 ## Preview
 https://user-images.githubusercontent.com/76080854/206830997-5ecc5d55-8219-4fff-8c81-84c90ac9c71b.mp4
 
@@ -35,8 +40,12 @@ Example:
                 }
             ],
             "timeout": 10,
-            "keybindings": {
-                "debug_close": ["Key1", "RControl"]
+            "keymaps": {
+                {
+                    "keys": ["'"],
+                    "modifiers": ["LCtrl"],
+                    "event": "AddApp"
+                }
             }
         },
         {
