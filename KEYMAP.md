@@ -12,9 +12,7 @@
 ```
 
 ## Modifiers:
-- Ctrl
 - R/LCtrl
-- Alt
 - R/LAlt
 - Shift
 - R/LShift
