@@ -1,4 +1,3 @@
-use regex::Regex;
 use which::which;
 
 use crate::config::options::Config;
