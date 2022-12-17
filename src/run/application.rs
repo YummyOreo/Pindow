@@ -19,7 +19,6 @@ fn spawn_app(command: config::options::AppCommand) {
 
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
-    println!("{num:?}");
 
     if num > 9 {
         return;
