@@ -21,7 +21,7 @@
           {
           "keys": ["1"],
           "modifiers": ["RCtrl"],
-          "event": "DebugClose"
+          "event": "DebugClos"
           }
       ]
     },
