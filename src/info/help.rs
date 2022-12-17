@@ -22,4 +22,3 @@ pub fn print_config_path() {
     println!("The path is: {}", path);
     process::exit(0);
 }
-

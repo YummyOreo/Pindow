@@ -21,7 +21,6 @@ pub fn get_args() -> Arguments {
         path: config::matches_path(&args),
         help: info::matches_help(&args),
         get_path: info::matches_path(&args),
-
     };
     return arguments;
 }
