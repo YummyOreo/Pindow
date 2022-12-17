@@ -2,6 +2,7 @@ use device_query::Keycode;
 
 use crate::config::key;
 use crate::config::options;
+use crate::error::config::LoadConfigError;
 
 pub fn load_string(file: String) -> String {
     match std::fs::read_to_string(&file) {
@@ -112,116 +113,132 @@ pub fn map_options(config_str: options::OptionsStr) -> options::Options {
     options
 }
 
-fn match_event(s: &str) -> Option<key::Event> {
-    match s {
-        "OpenApp" => Some(key::Event::OpenApp),
-        "AddApp" => Some(key::Event::AddApp),
-        "IncrementConfig" => Some(key::Event::IncementConfig),
-        "DecrementConfig" => Some(key::Event::DecrementConfig),
-        "IncrementSetConfig" => Some(key::Event::IncrementSetConfig),
-        "DecrementSetConfig" => Some(key::Event::DecrementSetConfig),
-        "DebugClose" => Some(key::Event::DebugClose),
-        _ => {
-            if s.starts_with("OpenApp") {
-                let s = s.replace("OpenApp", "");
-                Some(key::Event::OpenAppNum(
-                    s.to_string().parse::<usize>().unwrap(),
-                ))
-            } else if s.starts_with("SetConfig") {
-                let s = s.replace("SetConfig", "");
-                Some(key::Event::SetConfigNum(
-                    s.to_string().parse::<usize>().unwrap(),
-                ))
-            } else {
-                None
+fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
+    if s.starts_with("OpenApp") {
+        let s = s.replace("OpenApp", "").to_string();
+        let num = s.parse::<usize>();
+
+        if let Ok(num) = num {
+            if num == 0 || num > 9 {
+                return Err(LoadConfigError::InvalidNumber(s));
             }
+            return Ok(key::Event::OpenAppNum( num));
+        }
+        Err(LoadConfigError::InvalidNumber(s))
+    } else if s.starts_with("SetConfig") {
+        let s = s.replace("SetConfig", "").to_string();
+        let num = s.parse::<usize>();
+
+        if let Ok(num) = num {
+            if num == 0 || num > 9 {
+                return Err(LoadConfigError::InvalidNumber(s));
+            }
+            return Ok(key::Event::SetConfigNum( num));
+        }
+        Err(LoadConfigError::InvalidNumber(s))
+    } else {
+        Err(LoadConfigError::StringToEvent(s.to_string()))
+    }
+}
+
+fn match_event(s: &str) -> Result<key::Event, LoadConfigError> {
+    match s {
+        "OpenApp" => Ok(key::Event::OpenApp),
+        "AddApp" => Ok(key::Event::AddApp),
+        "IncrementConfig" => Ok(key::Event::IncementConfig),
+        "DecrementConfig" => Ok(key::Event::DecrementConfig),
+        "IncrementSetConfig" => Ok(key::Event::IncrementSetConfig),
+        "DecrementSetConfig" => Ok(key::Event::DecrementSetConfig),
+        "DebugClose" => Ok(key::Event::DebugClose),
+        _ => {
+            match_event_num(s)
         }
     }
 }
 
-fn keycode_from_string(s: &str) -> Option<Keycode> {
+fn keycode_from_string(s: &str) -> Result<Keycode, LoadConfigError> {
     match s {
-        "1" => Some(Keycode::Key1),
-        "2" => Some(Keycode::Key2),
-        "3" => Some(Keycode::Key3),
-        "4" => Some(Keycode::Key4),
-        "5" => Some(Keycode::Key5),
-        "6" => Some(Keycode::Key6),
-        "7" => Some(Keycode::Key7),
-        "8" => Some(Keycode::Key8),
-        "9" => Some(Keycode::Key9),
-        "a" => Some(Keycode::A),
-        "b" => Some(Keycode::B),
-        "c" => Some(Keycode::C),
-        "d" => Some(Keycode::D),
-        "e" => Some(Keycode::E),
-        "f" => Some(Keycode::F),
-        "g" => Some(Keycode::G),
-        "h" => Some(Keycode::H),
-        "i" => Some(Keycode::I),
-        "j" => Some(Keycode::J),
-        "k" => Some(Keycode::K),
-        "l" => Some(Keycode::L),
-        "m" => Some(Keycode::M),
-        "n" => Some(Keycode::N),
-        "o" => Some(Keycode::O),
-        "p" => Some(Keycode::P),
-        "q" => Some(Keycode::Q),
-        "r" => Some(Keycode::R),
-        "s" => Some(Keycode::S),
-        "t" => Some(Keycode::T),
-        "u" => Some(Keycode::U),
-        "v" => Some(Keycode::V),
-        "w" => Some(Keycode::W),
-        "x" => Some(Keycode::X),
-        "y" => Some(Keycode::Y),
-        "z" => Some(Keycode::Z),
-        "F1" => Some(Keycode::F1),
-        "F2" => Some(Keycode::F2),
-        "F3" => Some(Keycode::F3),
-        "F4" => Some(Keycode::F4),
-        "F5" => Some(Keycode::F5),
-        "F6" => Some(Keycode::F6),
-        "F7" => Some(Keycode::F7),
-        "F8" => Some(Keycode::F8),
-        "F9" => Some(Keycode::F9),
-        "F10" => Some(Keycode::F10),
-        "F11" => Some(Keycode::F11),
-        "F12" => Some(Keycode::F12),
-        "Escape" => Some(Keycode::Escape),
-        "Space" => Some(Keycode::Space),
-        "LCtrl" => Some(Keycode::LControl),
-        "RCtrl" => Some(Keycode::RControl),
-        "LShift" => Some(Keycode::LShift),
-        "RShift" => Some(Keycode::RShift),
-        "LAlt" => Some(Keycode::LAlt),
-        "RAlt" => Some(Keycode::RAlt),
-        "Meta" => Some(Keycode::Meta),
-        "Enter" => Some(Keycode::Enter),
-        "Up" => Some(Keycode::Up),
-        "Down" => Some(Keycode::Down),
-        "Left" => Some(Keycode::Left),
-        "Right" => Some(Keycode::Right),
-        "Backspace" => Some(Keycode::Backspace),
-        "CapsLock" => Some(Keycode::CapsLock),
-        "Tab" => Some(Keycode::Tab),
-        "Home" => Some(Keycode::Home),
-        "End" => Some(Keycode::End),
-        "PageUp" => Some(Keycode::PageUp),
-        "PageDown" => Some(Keycode::PageDown),
-        "Insert" => Some(Keycode::Insert),
-        "Delete" => Some(Keycode::Delete),
-        "`" => Some(Keycode::Grave),
-        "-" => Some(Keycode::Minus),
-        "=" => Some(Keycode::Equal),
-        "[" => Some(Keycode::LeftBracket),
-        "]" => Some(Keycode::RightBracket),
-        "\\" => Some(Keycode::BackSlash),
-        ";" => Some(Keycode::Semicolon),
-        "'" => Some(Keycode::Apostrophe),
-        "," => Some(Keycode::Comma),
-        "." => Some(Keycode::Dot),
-        "/" => Some(Keycode::Slash),
-        _ => panic!("failed to parse keycode"),
+        "1" => Ok(Keycode::Key1),
+        "2" => Ok(Keycode::Key2),
+        "3" => Ok(Keycode::Key3),
+        "4" => Ok(Keycode::Key4),
+        "5" => Ok(Keycode::Key5),
+        "6" => Ok(Keycode::Key6),
+        "7" => Ok(Keycode::Key7),
+        "8" => Ok(Keycode::Key8),
+        "9" => Ok(Keycode::Key9),
+        "a" => Ok(Keycode::A),
+        "b" => Ok(Keycode::B),
+        "c" => Ok(Keycode::C),
+        "d" => Ok(Keycode::D),
+        "e" => Ok(Keycode::E),
+        "f" => Ok(Keycode::F),
+        "g" => Ok(Keycode::G),
+        "h" => Ok(Keycode::H),
+        "i" => Ok(Keycode::I),
+        "j" => Ok(Keycode::J),
+        "k" => Ok(Keycode::K),
+        "l" => Ok(Keycode::L),
+        "m" => Ok(Keycode::M),
+        "n" => Ok(Keycode::N),
+        "o" => Ok(Keycode::O),
+        "p" => Ok(Keycode::P),
+        "q" => Ok(Keycode::Q),
+        "r" => Ok(Keycode::R),
+        "s" => Ok(Keycode::S),
+        "t" => Ok(Keycode::T),
+        "u" => Ok(Keycode::U),
+        "v" => Ok(Keycode::V),
+        "w" => Ok(Keycode::W),
+        "x" => Ok(Keycode::X),
+        "y" => Ok(Keycode::Y),
+        "z" => Ok(Keycode::Z),
+        "F1" => Ok(Keycode::F1),
+        "F2" => Ok(Keycode::F2),
+        "F3" => Ok(Keycode::F3),
+        "F4" => Ok(Keycode::F4),
+        "F5" => Ok(Keycode::F5),
+        "F6" => Ok(Keycode::F6),
+        "F7" => Ok(Keycode::F7),
+        "F8" => Ok(Keycode::F8),
+        "F9" => Ok(Keycode::F9),
+        "F10" => Ok(Keycode::F10),
+        "F11" => Ok(Keycode::F11),
+        "F12" => Ok(Keycode::F12),
+        "Escape" => Ok(Keycode::Escape),
+        "Space" => Ok(Keycode::Space),
+        "LCtrl" => Ok(Keycode::LControl),
+        "RCtrl" => Ok(Keycode::RControl),
+        "LShift" => Ok(Keycode::LShift),
+        "RShift" => Ok(Keycode::RShift),
+        "LAlt" => Ok(Keycode::LAlt),
+        "RAlt" => Ok(Keycode::RAlt),
+        "Meta" => Ok(Keycode::Meta),
+        "Enter" => Ok(Keycode::Enter),
+        "Up" => Ok(Keycode::Up),
+        "Down" => Ok(Keycode::Down),
+        "Left" => Ok(Keycode::Left),
+        "Right" => Ok(Keycode::Right),
+        "Backspace" => Ok(Keycode::Backspace),
+        "CapsLock" => Ok(Keycode::CapsLock),
+        "Tab" => Ok(Keycode::Tab),
+        "Home" => Ok(Keycode::Home),
+        "End" => Ok(Keycode::End),
+        "PageUp" => Ok(Keycode::PageUp),
+        "PageDown" => Ok(Keycode::PageDown),
+        "Insert" => Ok(Keycode::Insert),
+        "Delete" => Ok(Keycode::Delete),
+        "`" => Ok(Keycode::Grave),
+        "-" => Ok(Keycode::Minus),
+        "=" => Ok(Keycode::Equal),
+        "[" => Ok(Keycode::LeftBracket),
+        "]" => Ok(Keycode::RightBracket),
+        "\\" => Ok(Keycode::BackSlash),
+        ";" => Ok(Keycode::Semicolon),
+        "'" => Ok(Keycode::Apostrophe),
+        "," => Ok(Keycode::Comma),
+        "." => Ok(Keycode::Dot),
+        "/" => Ok(Keycode::Slash),
+        _ => Err(LoadConfigError::StringToKeycode(s.to_string())),
     }
 }

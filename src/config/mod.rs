@@ -16,7 +16,7 @@ pub fn load(path: Option<String>) -> options::Options {
     let str = load::load_string(path.unwrap());
 
     let data: options::OptionsStr = serde_json::from_str(&str).unwrap();
-    let config = load::map_options(data.clone());
+    let config = load::map_options(data);
 
     config
 }
