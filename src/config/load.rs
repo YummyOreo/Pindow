@@ -137,7 +137,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
         }
         Err(LoadConfigError::InvalidNumber(s))
     } else {
-        Err(LoadConfigError::StringToEvent(s.to_string()))
+        Err(LoadConfigError::StringToEventError(s.to_string()))
     }
 }
 
@@ -239,6 +239,6 @@ fn keycode_from_string(s: &str) -> Result<Keycode, LoadConfigError> {
         "," => Ok(Keycode::Comma),
         "." => Ok(Keycode::Dot),
         "/" => Ok(Keycode::Slash),
-        _ => Err(LoadConfigError::StringToKeycode(s.to_string())),
+        _ => Err(LoadConfigError::StringToKeycodeError(s.to_string())),
     }
 }

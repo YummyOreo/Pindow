@@ -1,8 +1,7 @@
 use notify_rust;
 use windows::{
-    Win32::Foundation::{HANDLE, HINSTANCE},
-    Win32::Foundation::{CloseHandle, HWND},
-    Win32::System::ProcessStatus::{K32GetProcessImageFileNameA, K32GetModuleFileNameExA},
+    Win32::Foundation::{HANDLE, HINSTANCE, CloseHandle, HWND},
+    Win32::System::ProcessStatus::K32GetModuleFileNameExA,
     Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
     Win32::UI::WindowsAndMessaging,
 };
@@ -52,25 +51,6 @@ pub fn close_handle(handle: HANDLE) {
 
 pub fn current_window() -> isize {
     unsafe { WindowsAndMessaging::GetForegroundWindow().0 }
-}
-
-pub fn get_windows() -> Vec<isize> {
-    // re do this to be better:
-    // https://stackoverflow.com/questions/210504/enumerate-windows-like-alt-tab-does
-    let mut windows: Vec<isize> = vec![];
-    unsafe {
-        let mut child = WindowsAndMessaging::GetTopWindow(None);
-        loop {
-            if child == HWND(0) {
-                break;
-            };
-            if WindowsAndMessaging::IsWindowVisible(child).as_bool() {
-                windows.insert(0, child.0);
-            }
-            child = WindowsAndMessaging::GetWindow(child, WindowsAndMessaging::GW_HWNDNEXT);
-        }
-    }
-    return windows;
 }
 
 pub fn popup(title: String, message: String) {

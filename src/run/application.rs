@@ -9,6 +9,14 @@ use crate::keybindings::handler::Handler;
 use crate::run::utils;
 use crate::window::utils::win;
 
+fn spawn_app(command: config::options::AppCommand) {
+    let _ = thread::spawn(move || {
+        let mut sys_command = Command::new(command.app);
+        sys_command.args(command.args);
+        sys_command.spawn().expect("failed to execute process");
+    });
+}
+
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
     println!("{num:?}");
@@ -29,15 +37,7 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) {
 
     if user_config.app_commands.len() >= num {
         let command = user_config.app_commands.clone().into_iter().nth(num - 1);
-
-        let _ = thread::spawn(move || {
-            let command_unwraped = command.unwrap();
-            let mut sys_command = Command::new(command_unwraped.app);
-            for arg in command_unwraped.args {
-                sys_command.arg(arg);
-            }
-            sys_command.spawn().expect("failed to execute process");
-        });
+        spawn_app(command.unwrap());
     }
 }
 
