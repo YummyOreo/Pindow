@@ -2,12 +2,16 @@ use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct SetConfigError {
-    pub num: i32
+    pub num: i32,
 }
 
 impl fmt::Display for SetConfigError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Failed to set the config to: {}. Try checking if that config exists!", self.num)
+        write!(
+            f,
+            "Failed to set the config to: {}. Try checking if that config exists!",
+            self.num
+        )
     }
 }
 

@@ -1,6 +1,6 @@
 use notify_rust;
 use windows::{
-    Win32::Foundation::{HANDLE, HINSTANCE, CloseHandle, HWND},
+    Win32::Foundation::{CloseHandle, HANDLE, HINSTANCE, HWND},
     Win32::System::ProcessStatus::K32GetModuleFileNameExA,
     Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
     Win32::UI::WindowsAndMessaging,

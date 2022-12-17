@@ -12,4 +12,3 @@ impl fmt::Display for Error {
         write!(f, "{}", self.cause)
     }
 }
-
