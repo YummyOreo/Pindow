@@ -44,9 +44,7 @@ fn map_defaults(keymaps: Vec<key::Keybind>) -> Vec<key::Keybind> {
     for map in defaults {
         let mut contains = false;
         for keymap in &keymaps {
-            if &map.event == &keymap.event {
-                contains = true;
-            }
+            contains = &map.event == &keymap.event;
         }
         if !contains {
             keymaps_new.push(map.clone());
