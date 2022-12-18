@@ -47,6 +47,14 @@ impl Options {
             self.current_config = 0;
         }
     }
+
+    pub fn decrement_config(&mut self) {
+        if self.current_config == 0 {
+            self.current_config = self.configs.len() - 1;
+        } else {
+            self.current_config -= 1;
+        }
+    }
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]

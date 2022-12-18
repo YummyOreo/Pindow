@@ -30,6 +30,14 @@
                         "RCtrl"
                     ],
                     "event": "DebugClose"
+                },
+                {
+                    "keys": [],
+                    "modifiers": [
+                        "LShift",
+                        "LCtrl"
+                    ],
+                    "event": "SetConfig3"
                 }
             ]
         },

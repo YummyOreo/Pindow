@@ -17,6 +17,13 @@ fn spawn_app(command: config::options::AppCommand) {
     });
 }
 
+pub fn run_app_by_num(user_config: &Config, num: usize) {
+    if user_config.app_commands.len() >= num {
+        let command = user_config.app_commands.clone().into_iter().nth(num - 1);
+        spawn_app(command.unwrap());
+    }
+}
+
 pub fn run_app(user_config: &Config, key_handler: &Handler) {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
 
@@ -34,10 +41,7 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) {
         }
     }
 
-    if user_config.app_commands.len() >= num {
-        let command = user_config.app_commands.clone().into_iter().nth(num - 1);
-        spawn_app(command.unwrap());
-    }
+    run_app_by_num(user_config, num);
 }
 
 fn get_path(user_config: &Options) -> String {
