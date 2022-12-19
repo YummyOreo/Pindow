@@ -20,7 +20,7 @@ https://user-images.githubusercontent.com/76080854/206830997-5ecc5d55-8219-4fff-
 
 
 # Installation
-[Download the binary here](https://github.com/YummyOreo/Pindow/releases) or [build it](#Building). Then put it somewere.
+[Download the binary here](https://github.com/YummyOreo/Pindow/releases/latest) or [build it](#Building). Then put it somewere.
 
 > You can put it in your path or have it start on start up. Whatever suits you!
 
