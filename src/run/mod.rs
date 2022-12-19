@@ -10,7 +10,7 @@ use crate::keybindings::handler::Handler;
 pub fn run_keybind(keymap: Event, user_configs: &mut Options, key_handler: &mut Handler) {
     match keymap {
         Event::OpenApp => application::run_app(&user_configs.get_current(), key_handler),
-        Event::OpenAppNum(n) => application::run_app_by_num(&user_configs.get_current(), n),
+        Event::OpenAppNum(n) => application::run_app_by_num(&user_configs.get_current(), n - 1),
 
         Event::AddApp => application::add_config(user_configs, key_handler),
 

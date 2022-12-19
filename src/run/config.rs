@@ -2,41 +2,39 @@ use crate::config::options::Options;
 use crate::keybindings::handler::Handler;
 use crate::window::utils::win::popup;
 
+fn notify_user(key_handler: &mut Handler, user_configs: &mut Options) {
+    key_handler.timeout = user_configs.get_current().timeout;
+    println!("Current Config: {}", user_configs.get_current().name);
+    popup(
+        "Config Changed".to_string(),
+        "Changed configuration to: ".to_string() + &user_configs.get_current().name,
+    );
+}
+
 pub fn set_config(user_configs: &mut Options, key_handler: &mut Handler, num: usize) {
     if num >= user_configs.configs.len() {
         return;
     }
 
-    let _ = user_configs.set_current(num);
+    match user_configs.set_current(num) {
+        Ok(_) => notify_user(key_handler, user_configs),
+        Err(e) => {
+            println!("{}", e);
+        }
+    }
 
-    key_handler.timeout = user_configs.get_current().timeout;
-    println!("Current Config: {}", user_configs.get_current().name);
-    popup(
-        "Config Changed".to_string(),
-        "Changed configuration to: ".to_string() + &user_configs.get_current().name,
-    );
 }
 
 pub fn incement_config(user_configs: &mut Options, key_handler: &mut Handler) {
     user_configs.increment();
 
-    key_handler.timeout = user_configs.get_current().timeout;
-    println!("Current Config: {}", user_configs.get_current().name);
-    popup(
-        "Config Changed".to_string(),
-        "Changed configuration to: ".to_string() + &user_configs.get_current().name,
-    );
+    notify_user(key_handler, user_configs);
 }
 
 pub fn decrement_config(user_configs: &mut Options, key_handler: &mut Handler) {
     user_configs.decrement_config();
 
-    key_handler.timeout = user_configs.get_current().timeout;
-    println!("Current Config: {}", user_configs.get_current().name);
-    popup(
-        "Config Changed".to_string(),
-        "Changed configuration to: ".to_string() + &user_configs.get_current().name,
-    );
+    notify_user(key_handler, user_configs);
 }
 
 pub fn inc_set_config(user_configs: &mut Options, key_handler: &mut Handler) {
