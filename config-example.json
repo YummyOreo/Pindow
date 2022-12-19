@@ -37,7 +37,7 @@
                         "LShift",
                         "LCtrl"
                     ],
-                    "event": "SetConfig3"
+                    "event": "DecrementSetConfig"
                 }
             ]
         },
