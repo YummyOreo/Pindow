@@ -23,15 +23,6 @@
             "timeout": 5,
             "keymaps": [
                 {
-                    "keys": [
-                        "1"
-                    ],
-                    "modifiers": [
-                        "RCtrl"
-                    ],
-                    "event": "DebugClose"
-                },
-                {
                     "keys": [],
                     "modifiers": [
                         "LShift",
@@ -70,6 +61,17 @@
         },
         {
             "name": "Nothing"
+        }
+    ],
+    "keymaps": [
+        {
+            "keys": [
+                "1"
+            ],
+            "modifiers": [
+                "RCtrl"
+            ],
+            "event": "DebugClose"
         }
     ]
 }
