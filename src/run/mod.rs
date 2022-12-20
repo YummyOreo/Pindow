@@ -5,14 +5,20 @@ mod utils;
 
 use crate::config::key::Event;
 use crate::config::options::Options;
-use crate::keybindings::handler::Handler;
 use crate::error::run;
+use crate::keybindings::handler::Handler;
 
-pub fn run_keybind(keymap: Event, user_configs: &mut Options, key_handler: &mut Handler) -> Result<(), run::RunEventError>{
+pub fn run_keybind(
+    keymap: Event,
+    user_configs: &mut Options,
+    key_handler: &mut Handler,
+) -> Result<(), run::RunEventError> {
     let mut result: Option<()> = None;
     match keymap {
         Event::OpenApp => result = application::run_app(&user_configs.get_current(), key_handler),
-        Event::OpenAppNum(n) => result = application::run_app_by_num(&user_configs.get_current(), n - 1),
+        Event::OpenAppNum(n) => {
+            result = application::run_app_by_num(&user_configs.get_current(), n - 1)
+        }
 
         Event::AddApp => result = application::add_config(user_configs, key_handler),
 
@@ -32,7 +38,7 @@ pub fn run_keybind(keymap: Event, user_configs: &mut Options, key_handler: &mut 
     }
 
     match result {
-        None => Err(run::RunEventError{ event: keymap, }),
+        None => Err(run::RunEventError { event: keymap }),
         Some(_) => Ok(()),
     }
 }

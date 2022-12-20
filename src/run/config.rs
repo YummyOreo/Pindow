@@ -24,7 +24,6 @@ pub fn set_config(user_configs: &mut Options, key_handler: &mut Handler, num: us
             None
         }
     }
-
 }
 
 pub fn incement_config(user_configs: &mut Options, key_handler: &mut Handler) -> Option<()> {
