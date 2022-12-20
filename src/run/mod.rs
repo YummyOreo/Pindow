@@ -6,26 +6,33 @@ mod utils;
 use crate::config::key::Event;
 use crate::config::options::Options;
 use crate::keybindings::handler::Handler;
+use crate::error::run;
 
-pub fn run_keybind(keymap: Event, user_configs: &mut Options, key_handler: &mut Handler) {
+pub fn run_keybind(keymap: Event, user_configs: &mut Options, key_handler: &mut Handler) -> Result<(), run::RunEventError>{
+    let mut result: Option<()> = None;
     match keymap {
-        Event::OpenApp => application::run_app(&user_configs.get_current(), key_handler),
-        Event::OpenAppNum(n) => application::run_app_by_num(&user_configs.get_current(), n - 1),
+        Event::OpenApp => result = application::run_app(&user_configs.get_current(), key_handler),
+        Event::OpenAppNum(n) => result = application::run_app_by_num(&user_configs.get_current(), n - 1),
 
-        Event::AddApp => application::add_config(user_configs, key_handler),
+        Event::AddApp => result = application::add_config(user_configs, key_handler),
 
-        Event::IncementConfig => config::incement_config(user_configs, key_handler),
-        Event::IncrementSetConfig => config::inc_set_config(user_configs, key_handler),
+        Event::IncementConfig => result = config::incement_config(user_configs, key_handler),
+        Event::IncrementSetConfig => result = config::inc_set_config(user_configs, key_handler),
 
-        Event::DecrementConfig => config::decrement_config(user_configs, key_handler),
-        Event::DecrementSetConfig => config::dec_set_config(user_configs, key_handler),
+        Event::DecrementConfig => result = config::decrement_config(user_configs, key_handler),
+        Event::DecrementSetConfig => result = config::dec_set_config(user_configs, key_handler),
 
-        Event::SetConfigNum(n) => config::set_config(user_configs, key_handler, n - 1),
+        Event::SetConfigNum(n) => result = config::set_config(user_configs, key_handler, n - 1),
 
         Event::DebugClose => {
             if user_configs.args.debug {
                 debug::quit();
             }
         }
+    }
+
+    match result {
+        None => Err(run::RunEventError{ event: keymap, }),
+        Some(_) => Ok(()),
     }
 }

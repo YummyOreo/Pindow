@@ -17,28 +17,30 @@ fn spawn_app(command: config::options::AppCommand) {
     });
 }
 
-pub fn run_app_by_num(user_config: &Config, num: usize) {
+pub fn run_app_by_num(user_config: &Config, num: usize) -> Option<()> {
     if user_config.app_commands.len() >= num {
         let command = user_config.app_commands.clone().into_iter().nth(num);
         spawn_app(command.unwrap());
+        return Some(());
     }
+    None
 }
 
-pub fn run_app(user_config: &Config, key_handler: &Handler) {
+pub fn run_app(user_config: &Config, key_handler: &Handler) -> Option<()> {
     let mut num = TryInto::<usize>::try_into(key_handler.num).unwrap();
 
     if num > 9 {
-        return;
+        return None;
     }
 
     if num == 0 {
         match utils::get_app_by_id(user_config, win::get_id(win::current_window()) as isize) {
             Some(res) => num = res + 1,
-            None =>  return,
+            None =>  return None,
        };
     }
 
-    run_app_by_num(user_config, num - 1);
+    run_app_by_num(user_config, num - 1)
 }
 
 fn get_path(user_config: &Options) -> String {
@@ -86,17 +88,19 @@ fn add_to_file(path: String, process_path: String, user_config: &Options, index:
     }
 }
 
-pub fn add_config(user_config: &mut Options, key_handler: &Handler) {
+pub fn add_config(user_config: &mut Options, key_handler: &Handler) -> Option<()> {
     if let Some(_) = utils::get_app_by_id(
         &user_config.get_current(),
         win::get_id(win::current_window()) as isize,
     ) {
-        return;
+        return None;
     }
     if let Ok(process_path) = utils::get_current_path() {
         let mut index = user_config.get_current().app_commands.len();
         if key_handler.num != 0 && key_handler.num < index as i8 {
             index = (key_handler.num as usize) - 1;
+        } else {
+            return None;
         }
 
         add_to_config(user_config, index, process_path.clone());
@@ -107,5 +111,7 @@ pub fn add_config(user_config: &mut Options, key_handler: &Handler) {
 
             add_to_file(path, process_path, &user_config, index);
         });
+        return Some(());
     }
+    None
 }

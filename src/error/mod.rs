@@ -1,6 +1,7 @@
 use std::fmt;
 
 pub mod config;
+pub mod run;
 
 #[derive(Debug, Clone)]
 pub struct Error {
