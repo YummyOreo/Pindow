@@ -60,8 +60,6 @@ fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: Vec<key::Keybin
         let mut contains = false;
         for keymap in &keymaps {
             contains = &map.event != &keymap.event;
-            println!("{contains}");
-            println!("{keymap:?}");
         }
         if !contains {
             keymaps_new.push(map.clone());
@@ -113,7 +111,6 @@ fn map_config(config_str: options::ConfigStr, defaults: &Defaults, index: i32) -
 
 pub fn map_options(config_str: options::OptionsStr) -> options::Options {
     let defaults = Defaults::new(config_str.timeout, config_str.keymaps.clone());
-    println!("{defaults:?}");
 
     let mut configs: Vec<options::Config> = Vec::default();
 
