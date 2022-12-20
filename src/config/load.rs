@@ -21,27 +21,42 @@ pub fn make_file(file: &String) {
     std::fs::write(file, "{\"configs\": [{}]}").expect("Unable to write file");
 }
 
-fn map_defaults(keymaps: Vec<key::Keybind>) -> Vec<key::Keybind> {
+#[derive(Debug)]
+struct Defaults {
+    pub timeout: u128,
+    pub keymaps: Vec<key::Keybind>,
+}
+
+impl Defaults {
+    pub fn new(timeout: Option<u128>, keymaps: Option<Vec<options::KeybindingsStr>>) -> Self {
+        let default_keymaps = vec![
+            key::Keybind {
+                keys: vec![Keycode::LControl, Keycode::Comma],
+                event: key::Event::OpenApp,
+            },
+            key::Keybind {
+                keys: vec![Keycode::LControl, Keycode::Apostrophe],
+                event: key::Event::AddApp,
+            },
+            key::Keybind {
+                keys: vec![Keycode::LControl, Keycode::Grave],
+                event: key::Event::IncrementSetConfig,
+            },
+            key::Keybind {
+                keys: vec![Keycode::RControl, Keycode::RAlt],
+                event: key::Event::DebugClose,
+            },
+        ];
+        let keymaps = map_keymaps(keymaps.unwrap_or(vec![]), default_keymaps);
+
+        let timeout = timeout.unwrap_or(5);
+        Defaults { timeout, keymaps }
+    }
+}
+
+fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: Vec<key::Keybind>) -> Vec<key::Keybind> {
     let mut keymaps_new = keymaps.clone();
-    let defaults = vec![
-        key::Keybind {
-            keys: vec![Keycode::LControl, Keycode::Comma],
-            event: key::Event::OpenApp,
-        },
-        key::Keybind {
-            keys: vec![Keycode::LControl, Keycode::Apostrophe],
-            event: key::Event::AddApp,
-        },
-        key::Keybind {
-            keys: vec![Keycode::LControl, Keycode::Grave],
-            event: key::Event::IncrementSetConfig,
-        },
-        key::Keybind {
-            keys: vec![Keycode::RControl, Keycode::RAlt],
-            event: key::Event::DebugClose,
-        },
-    ];
-    for map in defaults {
+    for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
             contains = &map.event != &keymap.event;
@@ -55,7 +70,7 @@ fn map_defaults(keymaps: Vec<key::Keybind>) -> Vec<key::Keybind> {
     keymaps_new
 }
 
-fn map_keymaps(maps: Vec<options::KeybindingsStr>) -> Vec<key::Keybind> {
+fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: Vec<key::Keybind>) -> Vec<key::Keybind> {
     let mut keymaps: Vec<key::Keybind> = vec![];
     for map in maps {
         let mut keys: Vec<Keycode> = vec![];
@@ -70,7 +85,7 @@ fn map_keymaps(maps: Vec<options::KeybindingsStr>) -> Vec<key::Keybind> {
         let event = match_event(&map.event).unwrap();
         keymaps.push(key::Keybind { keys, event })
     }
-    map_defaults(keymaps)
+    map_default_keymaps(keymaps, defaults)
 }
 
 fn map_app_commands(
@@ -86,21 +101,25 @@ fn map_app_commands(
     app_commands
 }
 
-fn map_config(config_str: options::ConfigStr, index: i32) -> options::Config {
+fn map_config(config_str: options::ConfigStr, defaults: &Defaults, index: i32) -> options::Config {
+
     options::Config {
         name: config_str.name.unwrap_or(index.to_string()),
         app_commands: map_app_commands(config_str.apps),
-        timeout: config_str.timeout.unwrap_or(5) * 1000,
-        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![])),
+        timeout: config_str.timeout.unwrap_or(defaults.timeout) * 1000,
+        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![]), defaults.keymaps.clone()),
     }
 }
 
 pub fn map_options(config_str: options::OptionsStr) -> options::Options {
+    let defaults = Defaults::new(config_str.timeout, config_str.keymaps.clone());
+    println!("{defaults:?}");
+
     let mut configs: Vec<options::Config> = Vec::default();
 
     let mut index = 0;
     for config in config_str.configs {
-        configs.push(map_config(config, index));
+        configs.push(map_config(config, &defaults, index));
         index += 1;
     }
 
