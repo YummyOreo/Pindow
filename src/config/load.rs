@@ -59,9 +59,11 @@ fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: Vec<key::Keybin
     for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
-            contains = &map.event != &keymap.event;
+            if &map.event == &keymap.event {
+                contains = true;
+            }
         }
-        if !contains {
+        if contains {
             keymaps_new.push(map.clone());
         }
     }
@@ -73,7 +75,7 @@ fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: Vec<key::Keybind>) 
     for map in maps {
         let mut keys: Vec<Keycode> = vec![];
         for key in map.keys {
-            keys.push(keycode_from_string(&key[0..key.len()]).unwrap());
+            keys.push(keycode_from_string(&key).unwrap());
         }
 
         for key in map.modifiers.unwrap_or(vec![]) {
@@ -134,24 +136,20 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
         let s = s.replace("OpenApp", "").to_string();
         let num = s.parse::<usize>();
 
-        if let Ok(num) = num {
-            if num == 0 || num > 9 {
-                return Err(LoadConfigError::InvalidNumber(s));
-            }
-            return Ok(key::Event::OpenAppNum(num));
+        match num {
+            Ok(num) if num > 0 || num > 9 =>  Err(LoadConfigError::InvalidNumber(s)),
+            Ok(num) => Ok(key::Event::OpenAppNum(num)),
+            Err(_) => Err(LoadConfigError::InvalidNumber(s)),
         }
-        Err(LoadConfigError::InvalidNumber(s))
     } else if s.starts_with("SetConfig") {
         let s = s.replace("SetConfig", "").to_string();
         let num = s.parse::<usize>();
 
-        if let Ok(num) = num {
-            if num == 0 || num > 9 {
-                return Err(LoadConfigError::InvalidNumber(s));
-            }
-            return Ok(key::Event::SetConfigNum(num));
+        match num {
+            Ok(num) if num > 0 || num > 9 =>  Err(LoadConfigError::InvalidNumber(s)),
+            Ok(num) => Ok(key::Event::SetConfigNum(num)),
+            Err(_) => Err(LoadConfigError::InvalidNumber(s)),
         }
-        Err(LoadConfigError::InvalidNumber(s))
     } else {
         Err(LoadConfigError::StringToEventError(s.to_string()))
     }
