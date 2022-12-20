@@ -36,8 +36,8 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) -> Option<()> {
     if num == 0 {
         match utils::get_app_by_id(user_config, win::get_id(win::current_window()) as isize) {
             Some(res) => num = res + 1,
-            None =>  return None,
-       };
+            None => return None,
+        };
     }
 
     run_app_by_num(user_config, num - 1)
