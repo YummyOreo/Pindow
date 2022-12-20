@@ -59,7 +59,9 @@ fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: Vec<key::Keybin
     for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
-            contains = &map.event == &keymap.event;
+            contains = &map.event != &keymap.event;
+            println!("{contains}");
+            println!("{keymap:?}");
         }
         if !contains {
             keymaps_new.push(map.clone());

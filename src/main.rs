@@ -16,7 +16,6 @@ fn load_current_config() -> config::options::Options {
 
     if let Some(current_config) = user_config.args.start_config {
         user_config.set_current(current_config).unwrap();
-        println!();
     }
 
     user_config
