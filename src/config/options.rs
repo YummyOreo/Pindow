@@ -73,4 +73,6 @@ pub struct ConfigStr {
 #[derive(Debug, Deserialize, Clone, Serialize)]
 pub struct OptionsStr {
     pub configs: Vec<ConfigStr>,
+    pub timeout: Option<u128>,
+    pub keymaps: Option<Vec<KeybindingsStr>>
 }

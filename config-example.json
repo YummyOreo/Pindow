@@ -21,17 +21,7 @@
                 }
             ],
             "timeout": 5,
-            "keymaps": [
-                {
-                    "keys": [
-                        "1"
-                    ],
-                    "modifiers": [
-                        "RCtrl"
-                    ],
-                    "event": "DebugClose"
-                }
-            ]
+            "keymaps": []
         },
         {
             "name": "Chill",
@@ -62,6 +52,17 @@
         },
         {
             "name": "Nothing"
+        }
+    ],
+    "keymaps": [
+        {
+            "keys": [
+                "1"
+            ],
+            "modifiers": [
+                "RCtrl"
+            ],
+            "event": "DebugClose"
         }
     ]
 }
