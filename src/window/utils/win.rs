@@ -57,7 +57,6 @@ pub fn popup(title: String, message: String) {
     // replace this with better solution
     let _ = notify_rust::Notification::new()
         .appname("Pin App")
-        .icon("file:///C:/Users/OreoD/Downloads/pin.png")
         .summary(&title)
         .body(&message)
         .timeout(notify_rust::Timeout::Milliseconds(1000))
