@@ -48,8 +48,9 @@ fn keybinding_update(
     key_handler.check_num_time();
 
     if let Some(keybind_run) = key_handler.check_keybinds(&user_config) {
-        run::run_keybind(keybind_run, user_config, key_handler);
-        key_handler.reset_num();
+        if let Ok(_) = run::run_keybind(keybind_run, user_config, key_handler) {
+            key_handler.reset_num();
+        }
     }
 }
 
