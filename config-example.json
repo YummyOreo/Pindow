@@ -1,7 +1,6 @@
 {
     "configs": [
         {
-            "name": "Work",
             "apps": [
                 {
                     "app_path": "alacritty",

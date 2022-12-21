@@ -128,11 +128,11 @@ pub fn map_options(config_str: options::OptionsStr) -> options::Options {
 
     let mut configs: Vec<options::Config> = Vec::default();
 
-    for i in 0..config_str.configs.len() - 1 {
+    for i in 0..config_str.configs.len() {
         configs.push(map_config(
             config_str.configs[i].clone(),
             &defaults,
-            i as i32,
+            (i + 1) as i32,
         ));
     }
 
