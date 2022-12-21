@@ -29,7 +29,7 @@ Opens the app at the given index.
 
 ### "AddApp"
 
-Adds the current focesed app to the current config's app list.
+Adds the current focused app to the current config's app list.
 If a number is provided (not 0), then it will insert the app into that index and shift all others to the right.
 
 ### "IncrementConfig":
@@ -42,13 +42,13 @@ Increments the current config
 
 ### "IncrementSetConfig":
 
-Sets the current config to givent a number.
-If no number is provided (or 0), it will incement the current config.
+Sets the current config to given a number.
+If no number is provided (or 0), it will increment the current config.
 
 ### "DecrementSetConfig":
 
-Sets the current config to givent a number.
-If no number is provided (or 0), it will decement the current config.
+Sets the current config to given a number.
+If no number is provided (or 0), it will decrement the current config.
 
 ### "SetConfig{number}":
 
