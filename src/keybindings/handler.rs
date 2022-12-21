@@ -90,7 +90,7 @@ impl Handler {
             return false;
         }
 
-        for key in self.current_keys.clone().into_iter() {
+        for key in &self.current_keys {
             if !expected.contains(&key) {
                 return false;
             }

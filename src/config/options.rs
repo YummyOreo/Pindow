@@ -26,11 +26,11 @@ pub struct Options {
 }
 
 impl Options {
-    pub fn get_current(&self) -> Config {
-        self.configs[self.current_config].clone()
+    pub fn get_current(&self) -> &Config {
+        &self.configs[self.current_config]
     }
 
-    pub fn set_current(&mut self, index: usize) -> Result<Config, error::config::SetConfigError> {
+    pub fn set_current(&mut self, index: usize) -> Result<&Config, error::config::SetConfigError> {
         if index >= self.configs.len() {
             Err(error::config::SetConfigError {
                 num: (index + 1) as i32,

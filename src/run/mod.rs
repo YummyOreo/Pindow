@@ -9,7 +9,7 @@ use crate::error::run;
 use crate::keybindings::handler::Handler;
 
 pub fn run_keybind(
-    keymap: Event,
+    keymap: &Event,
     user_configs: &mut Options,
     key_handler: &mut Handler,
 ) -> Result<(), run::RunEventError> {
@@ -38,7 +38,7 @@ pub fn run_keybind(
     }
 
     match result {
-        None => Err(run::RunEventError { event: keymap }),
+        None => Err(run::RunEventError { event: keymap.clone() }),
         Some(_) => Ok(()),
     }
 }

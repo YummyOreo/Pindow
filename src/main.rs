@@ -10,7 +10,7 @@ mod window;
 
 fn load_current_config() -> config::options::Options {
     let arguments = arguments::get_args();
-    let mut user_config = config::load(arguments.path.clone());
+    let mut user_config = config::load(&arguments.path);
 
     user_config.args = arguments;
 
@@ -21,7 +21,7 @@ fn load_current_config() -> config::options::Options {
     user_config
 }
 
-fn check_info(args: arguments::Arguments) {
+fn check_info(args: &arguments::Arguments) {
     if args.help {
         info::help::print_help_menue()
     }
@@ -47,8 +47,8 @@ fn keybinding_update(
     key_handler.check_num();
     key_handler.check_num_time();
 
-    if let Some(keybind_run) = key_handler.check_keybinds(&user_config) {
-        if let Ok(_) = run::run_keybind(keybind_run, user_config, key_handler) {
+    if let Some(keybind_run) = key_handler.check_keybinds(user_config) {
+        if let Ok(_) = run::run_keybind(&keybind_run, user_config, key_handler) {
             key_handler.reset_num();
         }
     }
@@ -73,7 +73,7 @@ fn main_loop(
 fn main() {
     let mut user_config = load_current_config();
 
-    check_info(user_config.args.clone());
+    check_info(&user_config.args);
 
     println!("Current Config: {}", user_config.get_current().name);
 

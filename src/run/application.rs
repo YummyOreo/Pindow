@@ -53,20 +53,20 @@ fn get_path(user_config: &Options) -> String {
     path.unwrap()
 }
 
-fn add_to_config(user_config: &mut Options, index: usize, path: String) {
+fn add_to_config(user_config: &mut Options, index: usize, path: &String) {
     let app_commands = &mut user_config.configs[user_config.current_config].app_commands;
 
     app_commands.insert(
         index,
         config::options::AppCommand {
-            app: path,
+            app: path.to_string(),
             args: vec![],
         },
     )
 }
 
 fn add_to_file(path: String, process_path: String, user_config: &Options, index: usize) {
-    let str = config::load::load_string(path.clone());
+    let str = config::load::load_string(&path);
 
     let mut data: config::options::OptionsStr = serde_json::from_str(&str).unwrap();
     let mut configs = data.configs;
@@ -103,7 +103,7 @@ pub fn add_config(user_config: &mut Options, key_handler: &Handler) -> Option<()
             return None;
         }
 
-        add_to_config(user_config, index, process_path.clone());
+        add_to_config(user_config, index, &process_path);
 
         let user_config = user_config.clone();
         let _ = thread::spawn(move || {

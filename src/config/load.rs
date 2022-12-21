@@ -4,11 +4,11 @@ use crate::config::key;
 use crate::config::options;
 use crate::error::config::LoadConfigError;
 
-pub fn load_string(file: String) -> String {
-    match std::fs::read_to_string(&file) {
+pub fn load_string(file: &String) -> String {
+    match std::fs::read_to_string(file) {
         Ok(data) => data,
         _ => {
-            make_file(&file);
+            make_file(file);
             load_string(file)
         }
     }
@@ -47,30 +47,31 @@ impl Defaults {
                 event: key::Event::DebugClose,
             },
         ];
-        let keymaps = map_keymaps(keymaps.unwrap_or(vec![]), default_keymaps);
+        let keymaps = map_keymaps(keymaps.unwrap_or(vec![]), &default_keymaps);
 
         let timeout = timeout.unwrap_or(5);
         Defaults { timeout, keymaps }
     }
 }
 
-fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: Vec<key::Keybind>) -> Vec<key::Keybind> {
+fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: &Vec<key::Keybind>) -> Vec<key::Keybind> {
     let mut keymaps_new = keymaps.clone();
     for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
-            if &map.event == &keymap.event {
+            if map.event == keymap.event {
                 contains = true;
             }
         }
+
         if contains {
-            keymaps_new.push(map.clone());
+            keymaps_new.push(map.to_owned());
         }
     }
     keymaps_new
 }
 
-fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: Vec<key::Keybind>) -> Vec<key::Keybind> {
+fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: &Vec<key::Keybind>) -> Vec<key::Keybind> {
     let mut keymaps: Vec<key::Keybind> = vec![];
     for map in maps {
         let mut keys: Vec<Keycode> = vec![];
@@ -107,12 +108,12 @@ fn map_config(config_str: options::ConfigStr, defaults: &Defaults, index: i32) -
         name: config_str.name.unwrap_or(index.to_string()),
         app_commands: map_app_commands(config_str.apps),
         timeout: config_str.timeout.unwrap_or(defaults.timeout) * 1000,
-        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![]), defaults.keymaps.clone()),
+        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![]), &defaults.keymaps),
     }
 }
 
 pub fn map_options(config_str: options::OptionsStr) -> options::Options {
-    let defaults = Defaults::new(config_str.timeout, config_str.keymaps.clone());
+    let defaults = Defaults::new(config_str.timeout, config_str.keymaps);
 
     let mut configs: Vec<options::Config> = Vec::default();
 

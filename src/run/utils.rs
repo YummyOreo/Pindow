@@ -6,17 +6,17 @@ use crate::window::utils::win;
 pub fn get_app_by_id(user_config: &Config, id: isize) -> Option<usize> {
     if let Some(handle) = win::get_handle(id as u32) {
         if let Some(path) = win::get_process_file(handle) {
-            for app in user_config.app_commands.clone() {
-                if let Ok(app_path) = get_path(app.app.clone()) {
+            for app in &user_config.app_commands {
+                if let Ok(app_path) = get_path(&app.app) {
                     if app_path == path {
-                        let command = app.app.clone();
+                        let command = &app.app;
                         // have to close it here
                         win::close_handle(handle);
 
                         let index = user_config
                             .app_commands
                             .iter()
-                            .position(|r| r.app == command)
+                            .position(|r| &r.app == command)
                             .unwrap();
                         return Some(index);
                     }
@@ -36,7 +36,7 @@ impl std::fmt::Display for GetPathError {
     }
 }
 
-pub fn get_path(command: String) -> Result<String, GetPathError> {
+pub fn get_path(command: &String) -> Result<String, GetPathError> {
     let path = which(command);
     match path {
         Ok(path) => {
