@@ -54,7 +54,10 @@ impl Defaults {
     }
 }
 
-fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: &Vec<key::Keybind>) -> Vec<key::Keybind> {
+fn map_default_keymaps(
+    keymaps: Vec<key::Keybind>,
+    default_maps: &Vec<key::Keybind>,
+) -> Vec<key::Keybind> {
     let mut keymaps_new = keymaps.clone();
     for map in default_maps {
         let mut contains = false;
@@ -71,17 +74,24 @@ fn map_default_keymaps(keymaps: Vec<key::Keybind>, default_maps: &Vec<key::Keybi
     keymaps_new
 }
 
-fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: &Vec<key::Keybind>) -> Vec<key::Keybind> {
+fn map_keymaps(
+    maps: Vec<options::KeybindingsStr>,
+    defaults: &Vec<key::Keybind>,
+) -> Vec<key::Keybind> {
     let mut keymaps: Vec<key::Keybind> = vec![];
     for map in maps {
-        let mut keys: Vec<Keycode> = vec![];
-        for key in map.keys {
-            keys.push(keycode_from_string(&key).unwrap());
-        }
-
-        for key in map.modifiers.unwrap_or(vec![]) {
-            keys.push(keycode_from_string(&key).unwrap());
-        }
+        let mut keys: Vec<Keycode> = map
+            .keys
+            .iter()
+            .map(|key| keycode_from_string(&key).unwrap())
+            .collect();
+        let mut modifiers: Vec<Keycode> = map
+            .modifiers
+            .unwrap_or(vec![])
+            .iter()
+            .map(|key| keycode_from_string(&key).unwrap())
+            .collect();
+        keys.append(&mut modifiers);
 
         let event = match_event(&map.event).unwrap();
         keymaps.push(key::Keybind { keys, event })
@@ -92,18 +102,19 @@ fn map_keymaps(maps: Vec<options::KeybindingsStr>, defaults: &Vec<key::Keybind>)
 fn map_app_commands(
     app_commands_str: Option<Vec<options::AppCommandStr>>,
 ) -> Vec<options::AppCommand> {
-    let mut app_commands = vec![];
-    for i in app_commands_str.unwrap_or(vec![]) {
-        app_commands.push(options::AppCommand {
-            app: i.app_path,
-            args: i.args.unwrap_or(vec![]),
-        });
-    }
+    let app_commands = app_commands_str
+        .unwrap_or(vec![])
+        .iter()
+        .map(|app_command| options::AppCommand {
+            app: app_command.app_path.clone(),
+            args: app_command.args.clone().unwrap_or(vec![]),
+        })
+        .collect();
+
     app_commands
 }
 
 fn map_config(config_str: options::ConfigStr, defaults: &Defaults, index: i32) -> options::Config {
-
     options::Config {
         name: config_str.name.unwrap_or(index.to_string()),
         app_commands: map_app_commands(config_str.apps),
@@ -117,10 +128,8 @@ pub fn map_options(config_str: options::OptionsStr) -> options::Options {
 
     let mut configs: Vec<options::Config> = Vec::default();
 
-    let mut index = 0;
-    for config in config_str.configs {
-        configs.push(map_config(config, &defaults, index));
-        index += 1;
+    for i in 0..config_str.configs.len() - 1 {
+        configs.push(map_config(config_str.configs[i].clone(), &defaults, i as i32));
     }
 
     let options = options::Options {
@@ -138,7 +147,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
         let num = s.parse::<usize>();
 
         match num {
-            Ok(num) if num > 0 || num > 9 =>  Err(LoadConfigError::InvalidNumber(s)),
+            Ok(num) if num > 0 || num > 9 => Err(LoadConfigError::InvalidNumber(s)),
             Ok(num) => Ok(key::Event::OpenAppNum(num)),
             Err(_) => Err(LoadConfigError::InvalidNumber(s)),
         }
@@ -147,7 +156,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
         let num = s.parse::<usize>();
 
         match num {
-            Ok(num) if num > 0 || num > 9 =>  Err(LoadConfigError::InvalidNumber(s)),
+            Ok(num) if num > 0 || num > 9 => Err(LoadConfigError::InvalidNumber(s)),
             Ok(num) => Ok(key::Event::SetConfigNum(num)),
             Err(_) => Err(LoadConfigError::InvalidNumber(s)),
         }
