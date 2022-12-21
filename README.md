@@ -80,5 +80,3 @@ There are no dependencies that will not be installed by cargo!
 Run `cargo build --release`!
 
 # ToDo
-#### v1.1.0
-- [x] Add custom keybinds to a specific apps
