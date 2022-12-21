@@ -81,6 +81,4 @@ Run `cargo build --release`!
 
 # ToDo
 #### v1.1.0
-- [ ] Tray stuff (i.e. minimize to tray by default and tray menu)
-- [ ] Add custom keybinds to a specific apps
-- [ ] GUI to view the current list/config
+- [x] Add custom keybinds to a specific apps
