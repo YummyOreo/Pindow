@@ -62,12 +62,12 @@ fn map_default_keymaps(
     for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
-            if map.event == keymap.event {
+            if &map.event == &keymap.event {
                 contains = true;
             }
         }
 
-        if contains {
+        if !contains {
             keymaps_new.push(map.to_owned());
         }
     }
@@ -129,7 +129,11 @@ pub fn map_options(config_str: options::OptionsStr) -> options::Options {
     let mut configs: Vec<options::Config> = Vec::default();
 
     for i in 0..config_str.configs.len() - 1 {
-        configs.push(map_config(config_str.configs[i].clone(), &defaults, i as i32));
+        configs.push(map_config(
+            config_str.configs[i].clone(),
+            &defaults,
+            i as i32,
+        ));
     }
 
     let options = options::Options {
