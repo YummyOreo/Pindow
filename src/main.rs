@@ -3,7 +3,7 @@ use device_query::{DeviceQuery, DeviceState, Keycode};
 mod arguments;
 mod config;
 mod error;
-mod info;
+mod help;
 mod keybindings;
 mod run;
 mod window;
@@ -23,11 +23,11 @@ fn load_current_config() -> config::options::Options {
 
 fn check_info(args: &arguments::Arguments) {
     if args.help {
-        info::help::print_help_menue()
+        help::print_help_menue()
     }
 
     if args.get_path {
-        info::help::print_config_path();
+        help::print_config_path();
     }
 }
 
