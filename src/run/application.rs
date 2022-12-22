@@ -18,7 +18,7 @@ fn spawn_app(command: config::options::AppCommand) {
 }
 
 pub fn run_app_by_num(user_config: &Config, num: usize) -> Option<()> {
-    if user_config.app_commands.len() > num + 1 {
+    if user_config.app_commands.len() >= num && user_config.app_commands.len() != 0 {
         let command = user_config.app_commands.clone().into_iter().nth(num);
         spawn_app(command.unwrap());
         return Some(());
