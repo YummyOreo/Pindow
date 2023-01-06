@@ -43,6 +43,11 @@ fn keybinding_update(
     key_handler: &mut keybindings::handler::Handler,
     user_config: &mut config::options::Options,
 ) {
+    if keys.is_empty() {
+        key_handler.set_current_keys(Vec::new());
+        return;
+    }
+
     key_handler.set_current_keys(keys.clone());
     key_handler.check_num();
     key_handler.check_num_time();
@@ -57,9 +62,8 @@ fn keybinding_update(
 fn main_loop(
     user_config: &mut config::options::Options,
     key_handler: &mut keybindings::handler::Handler,
+    device_state: DeviceState,
 ) {
-    let device_state = DeviceState::new();
-
     loop {
         let keys: Vec<Keycode> = device_state.get_keys();
         let key_update: bool = key_handler.check_update(&keys);
@@ -79,5 +83,7 @@ fn main() {
 
     let mut key_handler = get_key_handler(user_config.get_current().timeout);
 
-    main_loop(&mut user_config, &mut key_handler);
+    let device_state = DeviceState::new();
+
+    main_loop(&mut user_config, &mut key_handler, device_state);
 }
