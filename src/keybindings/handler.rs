@@ -90,13 +90,7 @@ impl Handler {
             return false;
         }
 
-        for key in &self.current_keys {
-            if !expected.contains(&key) {
-                return false;
-            }
-        }
-
-        true
+        self.current_keys.iter().all(|item| expected.contains(item))
     }
 
     pub fn set_current_keys(&mut self, keys: Vec<Keycode>) {
