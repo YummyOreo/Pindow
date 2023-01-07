@@ -48,12 +48,12 @@ fn keybinding_update(
         return;
     }
 
-    key_handler.set_current_keys(keys.clone());
+    key_handler.set_current_keys(keys);
     key_handler.check_num();
     key_handler.check_num_time();
 
     if let Some(keybind_run) = key_handler.check_keybinds(user_config) {
-        if let Ok(_) = run::run_keybind(&keybind_run, user_config, key_handler) {
+        if run::run_keybind(&keybind_run, user_config, key_handler).is_ok() {
             key_handler.reset_num();
         }
     }

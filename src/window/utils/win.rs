@@ -26,7 +26,7 @@ pub fn get_id(window: isize) -> u32 {
     let mut id: u32 = 0;
     unsafe {
         WindowsAndMessaging::GetWindowThreadProcessId(
-            HWND { 0: window },
+            HWND(window),
             Option::Some(&mut id as *mut u32),
         );
     };

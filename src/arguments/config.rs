@@ -1,4 +1,4 @@
-fn get_start_config(args: &Vec<String>, pointer: usize) -> usize {
+fn get_start_config(args: &[String], pointer: usize) -> usize {
     if let Ok(num) = args[pointer + 1].parse::<usize>() {
         return num - 1;
     }
@@ -16,8 +16,8 @@ pub fn matches_start(args: &Vec<String>) -> Option<usize> {
     }
 
     let mut pointer = 0;
-    while pointer < args.iter().count() {
-        if args[pointer] == "-c".to_string() || args[pointer] == "--config".to_string() {
+    while pointer < args.len() {
+        if args[pointer] == *"-c" || args[pointer] == *"--config" {
             return Some(get_start_config(args, pointer));
         }
 
@@ -27,7 +27,7 @@ pub fn matches_start(args: &Vec<String>) -> Option<usize> {
     None
 }
 
-pub fn matches_path(args: &Vec<String>) -> Option<String> {
+pub fn matches_path(args: &[String]) -> Option<String> {
     if args
         .iter()
         .filter(|&x| x == &"-p".to_string() || x == &"--path".to_string())
@@ -38,8 +38,8 @@ pub fn matches_path(args: &Vec<String>) -> Option<String> {
     }
 
     let mut pointer = 0;
-    while pointer < args.iter().count() {
-        if args[pointer] == "-p".to_string() || args[pointer] == "--path".to_string() {
+    while pointer < args.len() {
+        if args[pointer] == *"-p" || args[pointer] == *"--path" {
             return Some(args[pointer + 1].clone());
         }
         pointer += 1;

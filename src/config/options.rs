@@ -82,5 +82,5 @@ pub struct ConfigStr {
 pub struct OptionsStr {
     pub configs: Vec<ConfigStr>,
     pub timeout: Option<u128>,
-    pub keymaps: Option<Vec<KeybindingsStr>>
+    pub keymaps: Option<Vec<KeybindingsStr>>,
 }

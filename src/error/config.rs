@@ -25,9 +25,9 @@ pub enum LoadConfigError {
 impl fmt::Display for LoadConfigError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match &self {
-            &Self::StringToKeycodeError(s) => write!(f, "Could not convert \"{}\" to a keycode. \n\t- Try looking at documentation for a list of kecode (it might not be supported) \n\t- The events are case-sensitive", s),
-            &Self::StringToEventError(s) => write!(f, "Could not convert \"{}\" to a event. \n\t- Try looking at documentation for a list of events \n\t- The events are case-sensitive", s),
-            &Self::InvalidNumber(s) => write!(f, "Number \"{}\" is invalid, there are multiple possibilities: \n\t- Number is greater than 9 \n\t- Number is 0 or less \n\t- Number is not a number \nPlease resolve these or look at documentation for help.", s)
+            Self::StringToKeycodeError(s) => write!(f, "Could not convert \"{}\" to a keycode. \n\t- Try looking at documentation for a list of kecode (it might not be supported) \n\t- The events are case-sensitive", s),
+            Self::StringToEventError(s) => write!(f, "Could not convert \"{}\" to a event. \n\t- Try looking at documentation for a list of events \n\t- The events are case-sensitive", s),
+            Self::InvalidNumber(s) => write!(f, "Number \"{}\" is invalid, there are multiple possibilities: \n\t- Number is greater than 9 \n\t- Number is 0 or less \n\t- Number is not a number \nPlease resolve these or look at documentation for help.", s)
         }
     }
 }

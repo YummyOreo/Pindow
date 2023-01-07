@@ -52,7 +52,7 @@ pub fn get_path(command: &String) -> Result<String, GetPathError> {
 
 pub fn get_current_path() -> Result<String, GetPathError> {
     let current_window = win::get_id(win::current_window());
-    if let Some(handle) = win::get_handle(current_window as u32) {
+    if let Some(handle) = win::get_handle(current_window) {
         if let Some(path) = win::get_process_file(handle) {
             win::close_handle(handle);
             return Ok(path);

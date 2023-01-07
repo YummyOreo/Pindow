@@ -17,8 +17,9 @@ impl Handler {
         if keys.len() != self.current_keys.len() {
             return true;
         }
-        for key_index in 0..keys.len() {
-            if keys[key_index] != self.current_keys[key_index] {
+
+        for (key_index, key) in keys.iter().enumerate() {
+            if key != &self.current_keys[key_index] {
                 return true;
             }
         }
@@ -79,7 +80,7 @@ impl Handler {
     }
 
     pub fn reset_num(&mut self) {
-        if let Some(_) = self.num_time {
+        if self.num_time.is_some() {
             self.num_time = None;
             self.num = 0;
         }

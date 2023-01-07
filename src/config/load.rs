@@ -47,7 +47,7 @@ impl Defaults {
                 event: key::Event::DebugClose,
             },
         ];
-        let keymaps = map_keymaps(keymaps.unwrap_or(vec![]), &default_keymaps);
+        let keymaps = map_keymaps(keymaps.unwrap_or_default(), &default_keymaps);
 
         let timeout = timeout.unwrap_or(5);
         Defaults { timeout, keymaps }
@@ -62,7 +62,7 @@ fn map_default_keymaps(
     for map in default_maps {
         let mut contains = false;
         for keymap in &keymaps {
-            if &map.event == &keymap.event {
+            if map.event == keymap.event {
                 contains = true;
             }
         }
@@ -83,13 +83,13 @@ fn map_keymaps(
         let mut keys: Vec<Keycode> = map
             .keys
             .iter()
-            .map(|key| keycode_from_string(&key).unwrap())
+            .map(|key| keycode_from_string(key).unwrap())
             .collect();
         let mut modifiers: Vec<Keycode> = map
             .modifiers
-            .unwrap_or(vec![])
+            .unwrap_or_default()
             .iter()
-            .map(|key| keycode_from_string(&key).unwrap())
+            .map(|key| keycode_from_string(key).unwrap())
             .collect();
         keys.append(&mut modifiers);
 
@@ -103,11 +103,11 @@ fn map_app_commands(
     app_commands_str: Option<Vec<options::AppCommandStr>>,
 ) -> Vec<options::AppCommand> {
     let app_commands = app_commands_str
-        .unwrap_or(vec![])
+        .unwrap_or_default()
         .iter()
         .map(|app_command| options::AppCommand {
             app: app_command.app_path.clone(),
-            args: app_command.args.clone().unwrap_or(vec![]),
+            args: app_command.args.clone().unwrap_or_default(),
         })
         .collect();
 
@@ -116,10 +116,10 @@ fn map_app_commands(
 
 fn map_config(config_str: options::ConfigStr, defaults: &Defaults, index: i32) -> options::Config {
     options::Config {
-        name: config_str.name.unwrap_or(index.to_string()),
+        name: config_str.name.unwrap_or_else(|| index.to_string()),
         app_commands: map_app_commands(config_str.apps),
         timeout: config_str.timeout.unwrap_or(defaults.timeout) * 1000,
-        keymaps: map_keymaps(config_str.keymaps.unwrap_or(vec![]), &defaults.keymaps),
+        keymaps: map_keymaps(config_str.keymaps.unwrap_or_default(), &defaults.keymaps),
     }
 }
 
@@ -136,18 +136,16 @@ pub fn map_options(config_str: options::OptionsStr) -> options::Options {
         ));
     }
 
-    let options = options::Options {
+    options::Options {
         configs,
         current_config: 0,
         args: Default::default(),
-    };
-
-    options
+    }
 }
 
 fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
     if s.starts_with("OpenApp") {
-        let s = s.replace("OpenApp", "").to_string();
+        let s = s.replace("OpenApp", "");
         let num = s.parse::<usize>();
 
         match num {
@@ -156,7 +154,7 @@ fn match_event_num(s: &str) -> Result<key::Event, LoadConfigError> {
             Err(_) => Err(LoadConfigError::InvalidNumber(s)),
         }
     } else if s.starts_with("SetConfig") {
-        let s = s.replace("SetConfig", "").to_string();
+        let s = s.replace("SetConfig", "");
         let num = s.parse::<usize>();
 
         match num {

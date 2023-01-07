@@ -15,12 +15,11 @@ pub struct Arguments {
 
 pub fn get_args() -> Arguments {
     let args: Vec<String> = env::args().collect();
-    let arguments = Arguments {
+    Arguments {
         debug: debug::matches(&args),
         start_config: config::matches_start(&args),
         path: config::matches_path(&args),
         help: info::matches_help(&args),
         get_path: info::matches_path(&args),
-    };
-    return arguments;
+    }
 }

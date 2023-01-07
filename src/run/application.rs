@@ -1,5 +1,4 @@
 use directories::BaseDirs;
-use serde_json;
 use std::process::Command;
 use std::thread;
 
@@ -18,7 +17,7 @@ fn spawn_app(command: config::options::AppCommand) {
 }
 
 pub fn run_app_by_num(user_config: &Config, num: usize) -> Option<()> {
-    if user_config.app_commands.len() >= num && user_config.app_commands.len() != 0 {
+    if user_config.app_commands.len() >= num && !user_config.app_commands.is_empty() {
         let command = user_config.app_commands.clone().into_iter().nth(num);
         spawn_app(command.unwrap());
         return Some(());
@@ -46,7 +45,7 @@ pub fn run_app(user_config: &Config, key_handler: &Handler) -> Option<()> {
 fn get_path(user_config: &Options) -> String {
     let mut path = user_config.args.path.clone();
 
-    if let None = path {
+    if path.is_none() {
         let base_dirs = BaseDirs::new().unwrap();
         path = Some(base_dirs.data_dir().to_str().unwrap().to_string() + "\\pindow\\config.json");
     }
@@ -89,10 +88,12 @@ fn add_to_file(path: String, process_path: String, user_config: &Options, index:
 }
 
 pub fn add_config(user_config: &mut Options, key_handler: &Handler) -> Option<()> {
-    if let Some(_) = utils::get_app_by_id(
-        &user_config.get_current(),
+    if utils::get_app_by_id(
+        user_config.get_current(),
         win::get_id(win::current_window()) as isize,
-    ) {
+    )
+    .is_some()
+    {
         return None;
     }
     if let Ok(process_path) = utils::get_current_path() {
